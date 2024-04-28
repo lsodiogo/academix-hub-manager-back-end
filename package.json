@@ -1,7 +1,7 @@
 {
   "name": "academix-hub-manager",
   "version": "1.0.0",
-  "description": "![BRIEFING](https://github.com/lsodiogo/academix-hub-manager/blob/main/briefing.svg)",
+  "description": "BACK-END PROJECT",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
     "dev": "nodemon src/app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Diogo Lima",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
