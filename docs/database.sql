@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.5.5-10.4.28-MariaDB)
 # Database: academix_hub_manager
-# Generation Time: 2024-04-28 13:54:03 +0000
+# Generation Time: 2024-04-29 19:31:28 +0000
 # ************************************************************
 
 
@@ -300,7 +300,9 @@ LOCK TABLES `users` WRITE;
 
 INSERT INTO `users` (`id`, `email`, `hashed_password`, `user_category_id`, `created_at`, `updated_at`)
 VALUES
-	(1,'admin@admin.com','admin12345',1,'2024-04-24 14:47:15','2024-04-24 14:47:15');
+	(1,'admin@admin.com','admin12345',1,'2024-04-24 14:47:15','2024-04-24 14:47:15'),
+	(2,'student1@student1.com','student1',2,'2024-04-29 19:10:04','2024-04-29 19:10:04'),
+	(3,'teacher1@teacher1.com','teacher1',3,'2024-04-29 19:12:09','2024-04-29 19:12:09');
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
