@@ -1,4 +1,4 @@
-const connection = require("./connection");
+const connection = require("./connection_db");
 
 
 
@@ -11,7 +11,7 @@ async function getAllUsers() {
    } catch(error) {
       console.log(error);
       throw new Error("Something went wrong!");
-   }
+   };
 };
 
 
@@ -48,8 +48,42 @@ async function addUser(email, password, category) {
 
 
 
+async function updateUser(id, email, password, category) {
+   const params = [email, password, category, id];
+   
+   try {
+      const sql = `UPDATE users SET email = ?, hashed_password = ?, user_category_id = ? WHERE id = ?`;
+      const [result] = await connection.promise().query(sql, params);
+      return result;
+
+   } catch(error) {
+      console.log(error);
+      throw new Error("Something went wrong while trying to update the user!");
+   };
+};
+
+
+
+async function deleteUser(id) {
+   const params = [id];
+
+   try {
+      const sql = `DELETE FROM users WHERE id = ?`;
+      const [result] = await connection.promise().query(sql, params);
+      return result;
+
+   } catch(error) {
+      console.log(error);
+      throw new Error("Something went wrong while trying to delete the user!");
+   };
+};
+
+
+
 module.exports = {
    getAllUsers,
    getUserById,
-   addUser
+   addUser,
+   updateUser,
+   deleteUser
 };

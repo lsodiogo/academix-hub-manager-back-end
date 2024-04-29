@@ -1,4 +1,4 @@
-const usersDB = require("../db/users");
+const usersDB = require("../db/users_db");
 
 
 
@@ -45,7 +45,6 @@ async function addUser(req, res) {
 
    try {
       const result = await usersDB.addUser(email, password, category);
-      console.log(result.insertId);
       
       // To show user inserted
       const lastUserInserted = result.insertId
@@ -59,8 +58,39 @@ async function addUser(req, res) {
 
 
 
+async function updateUser(req, res) {
+   const { id } = req.params;
+   const { email, password, category } = req.body;
+
+   try {
+      const result = await usersDB.updateUser(id, email, password, category);
+      res.json(result);
+
+   } catch(error) {
+      res.status(500).send(error.message);
+   };
+};
+
+
+
+async function deleteUser(req, res) {
+   const { id } = req.params;
+
+   try {
+      const result = await usersDB.deleteUser(id);
+      res.json(result);
+
+   } catch(error) {
+      res.status(500).send(error.message);
+   };
+};
+
+
+
 module.exports = {
    getAllUsers,
    getUserById,
-   addUser
+   addUser,
+   updateUser,
+   deleteUser
 };
