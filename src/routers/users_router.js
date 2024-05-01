@@ -1,9 +1,9 @@
-const genericRouter = require("./generic_router");
-
+const genericRouter     = require("./generic_router");
 const genericController = require("../controllers/generic_controller");
-const usersDB = require("../db/users_db");
+const usersDB           = require("../db/users_db");
+const usersRouter       = genericRouter(genericController, usersDB);
 
-module.exports = genericRouter(genericController, usersDB);
+module.exports = usersRouter;
 
 
 

@@ -1,52 +1,29 @@
-const express = require("express");
-const router = express.Router();
+function genericRouter(controller, db) {
+   const express = require("express");
+   const router = express.Router();
 
-
-
-/* module.exports = function(controller, db) {
-   router
-      .get("/", 
-         function(req, res) {
-            controller.getAllItems(req, res, db)
-         }
-      )
-   ;
-   router.get("/:id", function(req, res) {controller.getItemById(req, res, db)});
-   router.post("/", (req, res) => controller.addItem(req, res, db));
-   router.put("/:id", (req, res) => controller.updateItem(req, res, db));
-   router.delete("/:id", (req, res) => controller.deleteItem(req, res, db));
-
-  return router;
-}; */
-
-
-
-function routers(controller, db) {
-   router
-   .get("/", 
-         function(req, res) {
-            controller.getAllItems(req, res, db)
-         }
-      )
-   ;
-   router.get("/:id", function(req, res) {controller.getItemById(req, res, db)});
-   router.post("/", (req, res) => controller.addItem(req, res, db));
-   router.put("/:id", (req, res) => controller.updateItem(req, res, db));
-   router.delete("/:id", (req, res) => controller.deleteItem(req, res, db));
+   router.get('/', controller.getAllItems(db));
+   router.get("/:id", controller.getItemById(db));
+   router.post("/", controller.addItem(db));
+   router.put("/:id", controller.updateItem(db));
+   router.delete("/:id", controller.deleteItem(db));
 
    return router;
 };
 
-module.exports = routers;
+module.exports = genericRouter;
 
 
 
-/* module.exports = function(controller) {
-   router.get("/", controller.getAllItems);
-   router.get("/:id", controller.getItemById);
-   router.post("/", controller.addItem);
-   router.put("/:id", controller.updateItem);
-   router.delete("/:id", controller.deleteItem);
-   
-   return router;
+/* module.exports = function createGenericRouter(controller, db) {
+   const express = require("express");
+   const router = express.Router();
+
+   router.get('/', controller.getAllItems(db));
+   router.get("/:id", controller.getItemById(db));
+   router.post("/", controller.addItem(db));
+   router.put("/:id", controller.updateItem(db));
+   router.delete("/:id", controller.deleteItem(db));
+
+  return router;
 }; */
