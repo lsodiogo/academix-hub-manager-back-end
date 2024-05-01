@@ -2,15 +2,15 @@ const usersDB = require("../db/users_db");
 
 
 
-async function getAllUsers(req, res) {
+async function getAll_Users(req, res) {
 
    try {
-      const users = await usersDB.getAllUsers();
+      const users = await usersDB.getAllItems();
 
       if (users) {
          res.json(users);
       } else {
-         res.status(404).send("data not found");
+         res.status(404).send("WARNING: Data not found!");
       };
 
    } catch(error) {
@@ -20,17 +20,18 @@ async function getAllUsers(req, res) {
 
 
 
-async function getUserById(req, res) {
+async function getById_Users(req, res) {
    const { id } = req.params;
    
    try {
-      const user = await usersDB.getUserById(id);
+      const user = await usersDB.getItemById(id);
 
       if (user) {
          res.json(user);
       } else {
-         res.status(404).send("User not found");
+         res.status(404).send("WARNING: User inserted not found!");
       };
+
    } catch(error) {
       res.status(500).send(error.message);
    };
@@ -38,17 +39,17 @@ async function getUserById(req, res) {
 
 
 
-async function addUser(req, res) {
-   const { email, password, category } = req.body;
+async function add_Users(req, res) {
+   const itemData = req.body;
 
    // TO DO: add validation for password and category
 
    try {
-      const result = await usersDB.addUser(email, password, category);
+      const result = await usersDB.addItem(itemData);
       
       // To show user inserted
-      const lastUserInserted = result.insertId
-      const user = await usersDB.getUserById(lastUserInserted);
+      const lastUserInserted = result[0].insertId;
+      const user = await usersDB.getItemById(lastUserInserted);
       res.json(user);
 
    } catch(error) {
@@ -58,12 +59,12 @@ async function addUser(req, res) {
 
 
 
-async function updateUser(req, res) {
+async function update_Users(req, res) {
    const { id } = req.params;
-   const { email, password, category } = req.body;
+   const itemData = req.body;
 
    try {
-      const result = await usersDB.updateUser(id, email, password, category);
+      const result = await usersDB.updateItem(id, itemData);
       res.json(result);
 
    } catch(error) {
@@ -73,11 +74,11 @@ async function updateUser(req, res) {
 
 
 
-async function deleteUser(req, res) {
+async function delete_Users(req, res) {
    const { id } = req.params;
 
    try {
-      const result = await usersDB.deleteUser(id);
+      const result = await usersDB.deleteItem(id);
       res.json(result);
 
    } catch(error) {
@@ -88,9 +89,9 @@ async function deleteUser(req, res) {
 
 
 module.exports = {
-   getAllUsers,
-   getUserById,
-   addUser,
-   updateUser,
-   deleteUser
+   getAll_Users,
+   getById_Users,
+   add_Users,
+   update_Users,
+   delete_Users
 };
