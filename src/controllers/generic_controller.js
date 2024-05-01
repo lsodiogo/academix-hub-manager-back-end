@@ -3,12 +3,13 @@ function getAllItems(db) {
    return async function(req, res) {
       
       try {
-         const items = await db.getAllItems();
+         const results = await db.getAllItems();
 
-         if (items) {
-            res.json(items);
+         // To show all data results of database
+         if (results) {
+            res.json(results);
          } else {
-            res.status(404).send("WARNING: Data not found!");
+            res.status(404).send("WARNING: No data found!");
          };
 
       } catch(error) {
@@ -26,8 +27,10 @@ function getItemById(db) {
       const { id } = req.params;
 
       try {
-         const item = await db.getItemById(id);
+         const result = await db.getItemById(id);
 
+         // To show item data of database
+         const item = result[0];
          if (item) {
             res.json(item);
          } else {
@@ -47,16 +50,14 @@ function addItem(db) {
    return async function(req, res) {
 
       const itemData = req.body;
-      
-      // TO DO: add validation for password and category
 
       try {
          const result = await db.addItem(itemData);
 
-         // To show item data inserted
+         // To show item data inserted in database
          const lastItemId = result[0].insertId;
          const item = await db.getItemById(lastItemId);
-         res.json(item);
+         res.json(item[0]);
 
       } catch(error) {
          res.status(500).send(error.message);
@@ -75,7 +76,16 @@ function updateItem(db) {
 
       try {
          const result = await db.updateItem(id, itemData);
-         res.json(result);
+
+         // To show item data updated in database
+         const itemUpdated = result[0].affectedRows;
+         
+         if (itemUpdated === 1) {
+            const user = await db.getItemById(id);
+            res.json(user[0]);
+         } else {
+            res.status(404).send("WARNING: Item not found!");
+         }; 
 
       } catch(error) {
          res.status(500).send(error.message);
@@ -93,7 +103,17 @@ function deleteItem(db) {
 
       try {
          const result = await db.deleteItem(id);
-         res.json(result);
+         
+         // To show item data deleted from database
+         const itemDeleted = result[0].affectedRows;
+
+         if (itemDeleted === 1) {
+            const user = await db.getItemById(id);
+            res.send("WARNING: Item deleted!");
+
+         } else {
+            res.status(404).send("WARNING: Item not found!");
+         }; 
 
       } catch(error) {
          res.status(500).send(error.message);
