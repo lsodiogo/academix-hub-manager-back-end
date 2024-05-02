@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.5.5-10.4.28-MariaDB)
 # Database: academix_hub_manager
-# Generation Time: 2024-04-29 19:31:28 +0000
+# Generation Time: 2024-05-02 21:10:46 +0000
 # ************************************************************
 
 
@@ -27,11 +27,10 @@ DROP TABLE IF EXISTS `backlog`;
 
 CREATE TABLE `backlog` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `action` varchar(255) NOT NULL,
   `table_name` enum('courses','lessons_schedule','school','status','students','teachers','users','users_categories') NOT NULL,
   `row_id` int(11) unsigned NOT NULL,
-  `full_description` varchar(255) NOT NULL,
-  `old_data` varchar(255) NOT NULL,
-  `new_data` varchar(255) NOT NULL,
+  `action_description` text NOT NULL,
   `user_id` int(11) unsigned NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -43,9 +42,34 @@ CREATE TABLE `backlog` (
 LOCK TABLES `backlog` WRITE;
 /*!40000 ALTER TABLE `backlog` DISABLE KEYS */;
 
-INSERT INTO `backlog` (`id`, `table_name`, `row_id`, `full_description`, `old_data`, `new_data`, `user_id`, `created_at`, `updated_at`)
+INSERT INTO `backlog` (`id`, `action`, `table_name`, `row_id`, `action_description`, `user_id`, `created_at`, `updated_at`)
 VALUES
-	(1,'school',1,'TEST','TEST','TEST',1,'2024-04-25 22:06:21','2024-04-25 22:06:21');
+	(57,'update','school',8,'{\"hours_duration\":{\"oldData\":320,\"newData\":310},\"updated_at\":{\"oldData\":\"2024-05-02T18:54:14.000Z\",\"newData\":\"2024-05-02T19:03:48.000Z\"}}',1,'2024-05-02 21:03:48','2024-05-02 21:03:48'),
+	(58,'update','school',8,'{\"begin\":{\"oldData\":\"2024-06-01T22:00:00.000Z\",\"newData\":\"2024-06-01T22:00:00.000Z\"},\"end\":{\"oldData\":\"2024-04-29T22:00:00.000Z\",\"newData\":\"2024-04-29T22:00:00.000Z\"},\"created_at\":{\"oldData\":\"2024-05-02T12:09:56.000Z\",\"newData\":\"2024-05-02T12:09:56.000Z\"},\"updated_at\":{\"oldData\":\"2024-05-02T19:03:48.000Z\",\"newData\":\"2024-05-02T19:03:48.000Z\"}}',1,'2024-05-02 21:06:14','2024-05-02 21:06:14'),
+	(59,'update','school',8,'{\"begin\":{\"oldData\":\"2024-06-01T22:00:00.000Z\",\"newData\":\"2024-06-01T22:00:00.000Z\"},\"end\":{\"oldData\":\"2024-04-29T22:00:00.000Z\",\"newData\":\"2024-04-29T22:00:00.000Z\"},\"created_at\":{\"oldData\":\"2024-05-02T12:09:56.000Z\",\"newData\":\"2024-05-02T12:09:56.000Z\"},\"updated_at\":{\"oldData\":\"2024-05-02T19:03:48.000Z\",\"newData\":\"2024-05-02T19:03:48.000Z\"}}',1,'2024-05-02 21:06:23','2024-05-02 21:06:23'),
+	(60,'delete','school',11,'{\"id\":11,\"name\":\"testd course\",\"edition_number\":10000,\"hours_duration\":310,\"begin\":\"2024-06-01T22:00:00.000Z\",\"end\":\"2024-04-29T22:00:00.000Z\",\"description\":\"\",\"teacher_id\":5,\"status_id\":2,\"created_at\":\"2024-05-02T19:16:50.000Z\",\"updated_at\":\"2024-05-02T19:16:50.000Z\"}',1,'2024-05-02 21:17:07','2024-05-02 21:17:07'),
+	(61,'insert','school',0,'[{\"id\":15,\"name\":\"testd course\",\"edition_number\":10000,\"hours_duration\":310,\"begin\":\"2024-06-01T22:00:00.000Z\",\"end\":\"2024-04-29T22:00:00.000Z\",\"description\":\"\",\"teacher_id\":5,\"status_id\":2,\"created_at\":\"2024-05-02T19:22:45.000Z\",\"updated_at\":\"2024-05-02T19:22:45.000Z\"}]',1,'2024-05-02 21:22:45','2024-05-02 21:22:45'),
+	(62,'insert','school',0,'{\"id\":16,\"name\":\"testd course\",\"edition_number\":10000,\"hours_duration\":310,\"begin\":\"2024-06-01T22:00:00.000Z\",\"end\":\"2024-04-29T22:00:00.000Z\",\"description\":\"\",\"teacher_id\":5,\"status_id\":2,\"created_at\":\"2024-05-02T19:24:38.000Z\",\"updated_at\":\"2024-05-02T19:24:38.000Z\"}',1,'2024-05-02 21:24:38','2024-05-02 21:24:38'),
+	(63,'insert','school',17,'{\"id\":17,\"name\":\"testd course\",\"edition_number\":10000,\"hours_duration\":310,\"begin\":\"2024-06-01T22:00:00.000Z\",\"end\":\"2024-04-29T22:00:00.000Z\",\"description\":\"\",\"teacher_id\":5,\"status_id\":2,\"created_at\":\"2024-05-02T19:25:01.000Z\",\"updated_at\":\"2024-05-02T19:25:01.000Z\"}',1,'2024-05-02 21:25:01','2024-05-02 21:25:01'),
+	(64,'insert','school',18,'{\"id\":18,\"name\":\"testd course\",\"edition_number\":10000,\"hours_duration\":310,\"begin\":\"2024-06-01T22:00:00.000Z\",\"end\":\"2024-04-29T22:00:00.000Z\",\"description\":\"\",\"teacher_id\":5,\"status_id\":2,\"created_at\":\"2024-05-02T19:29:15.000Z\",\"updated_at\":\"2024-05-02T19:29:15.000Z\"}',1,'2024-05-02 21:29:15','2024-05-02 21:29:15'),
+	(65,'insert','school',19,'{\"id\":19,\"name\":\"testd course\",\"edition_number\":10000,\"hours_duration\":310,\"begin\":\"2024-06-01T22:00:00.000Z\",\"end\":\"2024-04-29T22:00:00.000Z\",\"description\":\"\",\"teacher_id\":5,\"status_id\":2,\"created_at\":\"2024-05-02T19:29:42.000Z\",\"updated_at\":\"2024-05-02T19:29:42.000Z\"}',1,'2024-05-02 21:29:42','2024-05-02 21:29:42'),
+	(66,'insert','courses',20,'{\"id\":20,\"name\":\"testd course\",\"edition_number\":10000,\"hours_duration\":310,\"begin\":\"2024-06-01T22:00:00.000Z\",\"end\":\"2024-04-29T22:00:00.000Z\",\"description\":\"\",\"teacher_id\":5,\"status_id\":2,\"created_at\":\"2024-05-02T19:43:57.000Z\",\"updated_at\":\"2024-05-02T19:43:57.000Z\"}',1,'2024-05-02 21:43:57','2024-05-02 21:43:57'),
+	(67,'search','courses',20,'{\"id\":20,\"name\":\"testd course\",\"edition_number\":10000,\"hours_duration\":310,\"begin\":\"2024-06-01T22:00:00.000Z\",\"end\":\"2024-04-29T22:00:00.000Z\",\"description\":\"\",\"teacher_id\":5,\"status_id\":2,\"created_at\":\"2024-05-02T19:43:57.000Z\",\"updated_at\":\"2024-05-02T19:43:57.000Z\"}',1,'2024-05-02 21:49:30','2024-05-02 21:49:30'),
+	(71,'search','courses',0,'{\"id\":\"NO ID AVAILABLE\",\"action\":\"AS SEARCHING FOR 11 ITEMS\"}',1,'2024-05-02 22:27:28','2024-05-02 22:27:28'),
+	(72,'search','courses',5,'{\"id\":5,\"name\":\"Full Stack Web Development\",\"edition_number\":12345,\"hours_duration\":720,\"begin\":\"2024-04-30T22:00:00.000Z\",\"end\":\"2025-05-30T22:00:00.000Z\",\"description\":null,\"teacher_id\":4,\"status_id\":1,\"created_at\":\"2024-04-24T12:42:33.000Z\",\"updated_at\":\"2024-04-25T19:32:19.000Z\"}',1,'2024-05-02 22:30:00','2024-05-02 22:30:00'),
+	(73,'insert','courses',21,'{\"id\":21,\"name\":\"testd course\",\"edition_number\":10000,\"hours_duration\":310,\"begin\":\"2024-06-01T22:00:00.000Z\",\"end\":\"2024-04-29T22:00:00.000Z\",\"description\":\"\",\"teacher_id\":5,\"status_id\":2,\"created_at\":\"2024-05-02T20:30:31.000Z\",\"updated_at\":\"2024-05-02T20:30:31.000Z\"}',1,'2024-05-02 22:30:31','2024-05-02 22:30:31'),
+	(74,'update','courses',21,'{\"name\":{\"oldData\":\"testd course\",\"newData\":\"testd wewcourse\"},\"updated_at\":{\"oldData\":\"2024-05-02T20:30:31.000Z\",\"newData\":\"2024-05-02T20:30:57.000Z\"}}',1,'2024-05-02 22:30:57','2024-05-02 22:30:57'),
+	(75,'delete','courses',21,'{\"id\":21,\"name\":\"testd wewcourse\",\"edition_number\":10000,\"hours_duration\":310,\"begin\":\"2024-06-01T22:00:00.000Z\",\"end\":\"2024-04-29T22:00:00.000Z\",\"description\":\"\",\"teacher_id\":5,\"status_id\":2,\"created_at\":\"2024-05-02T20:30:31.000Z\",\"updated_at\":\"2024-05-02T20:30:57.000Z\"}',1,'2024-05-02 22:31:18','2024-05-02 22:31:18'),
+	(76,'search','users',0,'{\"id\":\"NO ID AVAILABLE\",\"action\":\"AS SEARCHING FOR 4 ITEMS\"}',1,'2024-05-02 23:02:58','2024-05-02 23:02:58'),
+	(77,'search','school',0,'{\"id\":\"NO ID AVAILABLE\",\"action\":\"AS SEARCHING FOR 2 ITEMS\"}',1,'2024-05-02 23:03:15','2024-05-02 23:03:15'),
+	(78,'search','courses',0,'{\"id\":\"NO ID AVAILABLE\",\"action\":\"AS SEARCHING FOR 11 ITEMS\"}',1,'2024-05-02 23:03:27','2024-05-02 23:03:27'),
+	(79,'search','teachers',0,'{\"id\":\"NO ID AVAILABLE\",\"action\":\"AS SEARCHING FOR 11 ITEMS\"}',1,'2024-05-02 23:03:39','2024-05-02 23:03:39'),
+	(80,'search','teachers',4,'{\"id\":4,\"names\":\"Joelle\",\"surnames\":\"Cummings\",\"birthdate\":\"1982-03-16T23:00:00.000Z\",\"email\":\"joelle@yahoo.com\",\"telef\":\"1-892-827-4039\",\"address\":\"129-7629 Risus. Rd.\",\"started_at\":\"2022-11-05T23:00:00.000Z\",\"status_id\":1,\"created_at\":\"2024-04-24T15:30:22.000Z\",\"updated_at\":\"2024-04-25T19:41:35.000Z\"}',1,'2024-05-02 23:03:48','2024-05-02 23:03:48'),
+	(81,'search','lessons_schedule',0,'{\"id\":\"NO ID AVAILABLE\",\"action\":\"AS SEARCHING FOR 1 ITEMS\"}',1,'2024-05-02 23:04:14','2024-05-02 23:04:14'),
+	(82,'search','lessons_schedule',8,'{\"id\":8,\"date\":\"2024-04-30T22:00:00.000Z\",\"begin_time\":\"09:00:00\",\"end_time\":\"12:00:00\",\"description\":\"Presentation\",\"course_id\":5,\"status_id\":1,\"created_at\":\"2024-04-24T12:45:43.000Z\",\"updated_at\":\"2024-04-25T19:33:30.000Z\"}',1,'2024-05-02 23:04:26','2024-05-02 23:04:26'),
+	(83,'search','status',0,'{\"id\":\"NO ID AVAILABLE\",\"action\":\"AS SEARCHING FOR 8 ITEMS\"}',1,'2024-05-02 23:04:58','2024-05-02 23:04:58'),
+	(84,'search','users_categories',0,'{\"id\":\"NO ID AVAILABLE\",\"action\":\"AS SEARCHING FOR 3 ITEMS\"}',1,'2024-05-02 23:06:45','2024-05-02 23:06:45'),
+	(85,'search','users',0,'{\"id\":\"NO ID AVAILABLE\",\"action\":\"AS SEARCHING FOR 4 ITEMS\"}',1,'2024-05-02 23:06:56','2024-05-02 23:06:56');
 
 /*!40000 ALTER TABLE `backlog` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -61,8 +85,8 @@ CREATE TABLE `courses` (
   `name` varchar(255) NOT NULL,
   `edition_number` int(11) NOT NULL,
   `hours_duration` int(11) NOT NULL,
-  `begin` date NOT NULL,
-  `end` date NOT NULL,
+  `begin_date` date NOT NULL,
+  `end_date` date NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `teacher_id` int(11) unsigned NOT NULL,
   `status_id` int(2) unsigned NOT NULL,
@@ -78,10 +102,19 @@ CREATE TABLE `courses` (
 LOCK TABLES `courses` WRITE;
 /*!40000 ALTER TABLE `courses` DISABLE KEYS */;
 
-INSERT INTO `courses` (`id`, `name`, `edition_number`, `hours_duration`, `begin`, `end`, `description`, `teacher_id`, `status_id`, `created_at`, `updated_at`)
+INSERT INTO `courses` (`id`, `name`, `edition_number`, `hours_duration`, `begin_date`, `end_date`, `description`, `teacher_id`, `status_id`, `created_at`, `updated_at`)
 VALUES
 	(5,'Full Stack Web Development',12345,720,'2024-05-01','2025-05-31',NULL,4,1,'2024-04-24 14:42:33','2024-04-25 21:32:19'),
-	(6,'UI/UX',10000,120,'2024-01-05','2024-03-05',NULL,7,4,'2024-04-24 18:30:28','2024-04-25 21:32:19');
+	(6,'UI/UX',10000,120,'2024-01-05','2024-03-05',NULL,7,4,'2024-04-24 18:30:28','2024-04-25 21:32:19'),
+	(12,'testd course',10000,310,'2024-06-02','2024-04-30','',5,2,'2024-05-02 21:19:09','2024-05-02 21:19:09'),
+	(13,'testd course',10000,310,'2024-06-02','2024-04-30','',5,2,'2024-05-02 21:22:04','2024-05-02 21:22:04'),
+	(14,'testd course',10000,310,'2024-06-02','2024-04-30','',5,2,'2024-05-02 21:22:24','2024-05-02 21:22:24'),
+	(15,'testd course',10000,310,'2024-06-02','2024-04-30','',5,2,'2024-05-02 21:22:45','2024-05-02 21:22:45'),
+	(16,'testd course',10000,310,'2024-06-02','2024-04-30','',5,2,'2024-05-02 21:24:38','2024-05-02 21:24:38'),
+	(17,'testd course',10000,310,'2024-06-02','2024-04-30','',5,2,'2024-05-02 21:25:01','2024-05-02 21:25:01'),
+	(18,'testd course',10000,310,'2024-06-02','2024-04-30','',5,2,'2024-05-02 21:29:15','2024-05-02 21:29:15'),
+	(19,'testd course',10000,310,'2024-06-02','2024-04-30','',5,2,'2024-05-02 21:29:42','2024-05-02 21:29:42'),
+	(20,'testd course',10000,310,'2024-06-02','2024-04-30','',5,2,'2024-05-02 21:43:57','2024-05-02 21:43:57');
 
 /*!40000 ALTER TABLE `courses` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -95,8 +128,8 @@ DROP TABLE IF EXISTS `lessons_schedule`;
 CREATE TABLE `lessons_schedule` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
-  `begin` time NOT NULL,
-  `end` time NOT NULL,
+  `begin_time` time NOT NULL,
+  `end_time` time NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `course_id` int(11) unsigned NOT NULL,
   `status_id` int(2) unsigned NOT NULL,
@@ -112,7 +145,7 @@ CREATE TABLE `lessons_schedule` (
 LOCK TABLES `lessons_schedule` WRITE;
 /*!40000 ALTER TABLE `lessons_schedule` DISABLE KEYS */;
 
-INSERT INTO `lessons_schedule` (`id`, `date`, `begin`, `end`, `description`, `course_id`, `status_id`, `created_at`, `updated_at`)
+INSERT INTO `lessons_schedule` (`id`, `date`, `begin_time`, `end_time`, `description`, `course_id`, `status_id`, `created_at`, `updated_at`)
 VALUES
 	(8,'2024-05-01','09:00:00','12:00:00','Presentation',5,1,'2024-04-24 14:45:43','2024-04-25 21:33:30');
 
@@ -141,7 +174,8 @@ LOCK TABLES `school` WRITE;
 
 INSERT INTO `school` (`id`, `name`, `abbreviation`, `created_at`, `updated_at`)
 VALUES
-	(1,'Fake Center Tech Hub','FCTH','2024-04-24 13:19:47','2024-04-24 13:19:47');
+	(1,'Fake Center Tech Hub','sadfs','2024-04-24 13:19:47','2024-05-02 17:31:01'),
+	(4,'School Test','ST','2024-05-02 17:33:04','2024-05-02 19:54:58');
 
 /*!40000 ALTER TABLE `school` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -272,7 +306,8 @@ VALUES
 	(10,'Mollie','Solomon','1983-01-16','mollie1637@yahoo.edu','1-638-720-1679','Ap #112-5221 Ornare, St.','2023-02-09',1,'2024-04-24 17:30:22','2024-04-25 21:41:46'),
 	(11,'Axel','Calhoun','1956-05-08','axel7779@protonmail.net','1-659-856-1813','6317 Parturient Rd.','2021-12-11',1,'2024-04-24 17:30:22','2024-04-25 21:41:46'),
 	(12,'Murphy','Summers','1976-05-09','murphy4965@yahoo.com','1-128-472-1018','7682 Metus Avenue','2021-03-25',1,'2024-04-24 17:30:22','2024-04-25 21:41:49'),
-	(13,'Virginia','David','1979-07-08','virginia4571@protonmail.ca','463-4285','244-1110 Rutrum Road','2021-01-21',1,'2024-04-24 17:30:22','2024-04-25 21:41:49');
+	(13,'Virginia','David','1979-07-08','virginia4571@protonmail.ca','463-4285','244-1110 Rutrum Road','2021-01-21',1,'2024-04-24 17:30:22','2024-04-25 21:41:49'),
+	(24,'teachertest','test','1990-01-19','@.com','123123435423','Street','2024-01-01',1,'2024-05-02 17:08:16','2024-05-02 17:10:54');
 
 /*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -291,6 +326,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
   KEY `users_categories` (`user_category_id`),
   CONSTRAINT `users_categories` FOREIGN KEY (`user_category_id`) REFERENCES `users_categories` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -302,7 +338,8 @@ INSERT INTO `users` (`id`, `email`, `hashed_password`, `user_category_id`, `crea
 VALUES
 	(1,'admin@admin.com','admin12345',1,'2024-04-24 14:47:15','2024-04-24 14:47:15'),
 	(2,'student1@student1.com','student1',2,'2024-04-29 19:10:04','2024-04-29 19:10:04'),
-	(3,'teacher1@teacher1.com','teacher1',3,'2024-04-29 19:12:09','2024-04-29 19:12:09');
+	(3,'teacher1@teacher1.com','teacher1',3,'2024-04-29 19:12:09','2024-04-29 19:12:09'),
+	(26,'teacher2@teacher2.com','teacher2',3,'2024-05-01 19:02:53','2024-05-01 19:02:53');
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
