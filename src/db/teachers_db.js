@@ -7,7 +7,7 @@ async function getTotalItems() {
       const sql = `
          SELECT COUNT(*)
          AS total_items
-         FROM users
+         FROM teachers;
       `;
 
       const result = await connection.promise().query(sql);
@@ -15,7 +15,7 @@ async function getTotalItems() {
 
    } catch(error) {
       console.log(error);
-      throw new Error("WARNING: Something went wrong while getting total of users!");
+      throw new Error("WARNING: Something went wrong while getting total of teachers!");
    };
 };
 
@@ -25,7 +25,7 @@ async function getAllItems() {
    try {
       const sql = `
          SELECT *
-         FROM users
+         FROM teachers
       `;
 
       const result = await connection.promise().query(sql);
@@ -33,7 +33,7 @@ async function getAllItems() {
 
    } catch(error) {
       console.log(error);
-      throw new Error("WARNING: Something went wrong while searching all users!");
+      throw new Error("WARNING: Something went wrong while searching all teachers!");
    };
 };
 
@@ -44,7 +44,7 @@ async function getItemById(id) {
 
    try {
       const sql = `
-         SELECT * FROM users
+         SELECT * FROM teachers
          WHERE id = ?
       `;
 
@@ -53,21 +53,21 @@ async function getItemById(id) {
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while searching user ${id}!`);
+      throw new Error(`WARNING: Something went wrong while searching teacher ${id}!`);
    };
 };
 
 
 
 async function addItem(itemData) {
-   const { email, password, category } = itemData;
-   const params = [email, password, category];
+   const { names, surnames, birthdate, email, telef, address, started, status } = itemData;
+   const params = [names, surnames, birthdate, email, telef, address, started, status];
    
    try {
       const sql = `
-         INSERT INTO users
-         (email, hashed_password, user_category_id)
-         VALUES(?, ?, ?)
+         INSERT INTO teachers
+         (names, surnames, birthdate, email, telef, address, started_at, status_id)
+         VALUES(?, ?, ?, ?, ?, ?, ?, ?)
       `;
 
       const result = await connection.promise().query(sql, params);
@@ -75,22 +75,27 @@ async function addItem(itemData) {
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while trying to insert user ${email}!`);
+      throw new Error(`WARNING: Something went wrong while trying to insert teacher ${email}!`);
    };
 };
 
 
 
 async function updateItem(id, itemData) {
-   const { email, password, category } = itemData;
-   const params = [email, password, category, id];
+   const { names, surnames, birthdate, email, telef, address, started, status } = itemData;
+   const params = [names, surnames, birthdate, email, telef, address, started, status, id];
    
    try {
       const sql = `
-         UPDATE users
-         SET email = ?,
-            hashed_password = ?,
-            user_category_id = ?
+         UPDATE teachers
+         SET names = ?,
+            surnames = ?,
+            birthdate = ?,
+            email = ?,
+            telef = ?,
+            address = ?,
+            started_at = ?,
+            status_id = ?
          WHERE id = ?
       `;
 
@@ -99,7 +104,7 @@ async function updateItem(id, itemData) {
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while trying to update user ${id}!`);
+      throw new Error(`WARNING: Something went wrong while trying to update teacher ${id}!`);
    };
 };
 
@@ -110,7 +115,7 @@ async function deleteItem(id) {
 
    try {
       const sql = `
-         DELETE FROM users
+         DELETE FROM teachers
          WHERE id = ?
       `;
       
@@ -119,7 +124,7 @@ async function deleteItem(id) {
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while trying to delete user ${id}!`);
+      throw new Error(`WARNING: Something went wrong while trying to delete teacher ${id}!`);
    };
 };
 

@@ -2,9 +2,32 @@ const connection = require("./connection_db");
 
 
 
+async function getTotalItems() {
+   try {
+      const sql = `
+         SELECT COUNT(*)
+         AS total_items
+         FROM studetns
+      `;
+
+      const result = await connection.promise().query(sql);
+      return result[0];
+
+   } catch(error) {
+      console.log(error);
+      throw new Error("WARNING: Something went wrong while getting total of students!");
+   };
+};
+
+
+
 async function getAllItems() {
    try {
-      const sql = `SELECT * FROM students`;
+      const sql = `
+         SELECT *
+         FROM students
+      `;
+
       const result = await connection.promise().query(sql);
       return result[0];
 
@@ -20,7 +43,11 @@ async function getItemById(id) {
    const params = [id];
 
    try {
-      const sql = `SELECT * FROM students WHERE id = ?`;
+      const sql = `
+         SELECT * FROM students
+         WHERE id = ?
+      `;
+
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -33,11 +60,16 @@ async function getItemById(id) {
 
 
 async function addItem(itemData) {
-   const { email, password, category } = itemData;
-   const params = [email, password, category];
+   const { names, surnames, birthdate, email, telef, address, enrolled, course, grade, graduated, status } = itemData;
+   const params = [names, surnames, birthdate, email, telef, address, enrolled, course, grade, graduated, status];
    
    try {
-      const sql = `INSERT INTO students (email, hashed_password, user_category_id) VALUES(?, ?, ?)`;
+      const sql = `
+         INSERT INTO students
+         (names, surnames, birthdate, email, telef, address, enrolled, course, grade, graduated, status)
+         VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+
       const result = await connection.promise().query(sql, params);
       return result;
 
@@ -50,17 +82,32 @@ async function addItem(itemData) {
 
 
 async function updateItem(id, itemData) {
-   const { email, password, category } = itemData;
-   const params = [email, password, category, id];
+   const { names, surnames, birthdate, email, telef, address, enrolled, course, grade, graduated, status } = itemData;
+   const params = [names, surnames, birthdate, email, telef, address, enrolled, course, grade, graduated, status, id];
    
    try {
-      const sql = `UPDATE students SET email = ?, hashed_password = ?, user_category_id = ? WHERE id = ?`;
+      const sql = `
+         UPDATE students
+         SET names = ?,
+            surnames = ?,
+            birthdate = ?,
+            email = ?,
+            telef = ?,
+            address = ?,
+            enrolled_at = ?,
+            course_id = ?,
+            grade = ?,
+            graduated_at = ?,
+            status_id = ?
+         WHERE id = ?
+      `;
+
       const result = await connection.promise().query(sql, params);
       return result;
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while trying to update student ${email}!`);
+      throw new Error(`WARNING: Something went wrong while trying to update student ${id}!`);
    };
 };
 
@@ -70,19 +117,24 @@ async function deleteItem(id) {
    const params = [id];
 
    try {
-      const sql = `DELETE FROM students WHERE id = ?`;
+      const sql = `
+         DELETE FROM students
+         WHERE id = ?
+      `;
+      
       const result = await connection.promise().query(sql, params);
       return result;
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while trying to delete student ${email}!`);
+      throw new Error(`WARNING: Something went wrong while trying to delete student ${id}!`);
    };
 };
 
 
 
 module.exports = {
+   getTotalItems,
    getAllItems,
    getItemById,
    addItem,
