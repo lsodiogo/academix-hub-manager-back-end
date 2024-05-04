@@ -8,7 +8,7 @@ async function logChangesToBacklog(itemData, id, action, tableName) {
    if (Object.keys(itemData).length !== 0) {
 
       const itemDataString = JSON.stringify(itemData);
-      const params = [action, tableName, id, itemDataString, "1"];
+      const params = [ action, tableName, id, itemDataString, "1" ];
       
       try {
          // TO DO: Validations for table_name and user_id

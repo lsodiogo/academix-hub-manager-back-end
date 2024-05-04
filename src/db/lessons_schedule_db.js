@@ -21,11 +21,15 @@ async function getTotalItems() {
 
 
 
-async function getAllItems() {
+async function getAllItems(limit, offset) {
+   const params = [ limit, offset ];
+   
    try {
       const sql = `
          SELECT *
          FROM lessons_schedule
+         LIMIT ?
+         OFFSET ?
       `;
 
       const result = await connection.promise().query(sql);
@@ -40,7 +44,7 @@ async function getAllItems() {
 
 
 async function getItemById(id) {
-   const params = [id];
+   const params = [ id ];
 
    try {
       const sql = `
@@ -61,7 +65,7 @@ async function getItemById(id) {
 
 async function addItem(itemData) {
    const { date, begin, end, description, course_id, status_id } = itemData;
-   const params = [date, begin, end, description, course_id, status_id];
+   const params = [ date, begin, end, description, course_id, status_id ];
    
    try {
       const sql = `
@@ -83,7 +87,7 @@ async function addItem(itemData) {
 
 async function updateItem(id, itemData) {
    const { name } = itemData;
-   const params = [name, id];
+   const params = [ name, id ];
    
    try {
       const sql = `
@@ -109,7 +113,7 @@ async function updateItem(id, itemData) {
 
 
 async function deleteItem(id) {
-   const params = [id];
+   const params = [ id ];
 
    try {
       const sql = `

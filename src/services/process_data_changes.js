@@ -1,4 +1,4 @@
-function processItemDataChanges(oldData, newData) {
+function processDataChanges(oldData, newData) {
    
    const itemDataChanged = {};
             
@@ -24,5 +24,5 @@ function processItemDataChanges(oldData, newData) {
 
 
 module.exports = {
-   processItemDataChanges
+   processDataChanges
 };

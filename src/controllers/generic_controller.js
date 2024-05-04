@@ -1,26 +1,46 @@
-const { processItemDataChanges } = require("../services/processDataBacklog");
+const { processPaginationLinks } = require("../services/process_pagination_links");
+
+const { processDataChanges } = require("../services/process_data_changes");
 const { logChangesToBacklog } = require("../db/backlog_db");
 
 function getAllItems(db, tableNameParam) {
    
    return async function(req, res) {
       
+      let { limit, offset } = req.query;
+      limit = limit && !isNaN(parseInt(limit)) ? parseInt(limit) : 5;
+      offset = offset && !isNaN(parseInt(offset)) ? parseInt(offset) : 0;
+      
+
       try {
-         const results = await db.getAllItems();
-         const totalItems = await db.getTotalItems();
+         const getTotalItems = await db.getTotalItems();
+         const totalItems = getTotalItems[0].total_items;
+
+         const allItems = await db.getAllItems(limit, offset);
 
          // To show all data results of database
-         if (results) {
-            res.json(results);
+         if (allItems) {
 
-            // To log into backlog if any search have been done
+            // To create pagination
+            const paginationLinks = processPaginationLinks(limit, offset, totalItems, tableNameParam);
+
+            // To show data
+            res.json(
+               {
+                  totalItems: totalItems,
+                  ...paginationLinks,
+                  results: allItems
+               }
+            );
+
+            /* // To log into backlog if any search have been done
             const action = "search";
             const tableName = tableNameParam;
             const searchAll = {
                id: "NO ID AVAILABLE",
-               action: `AS SEARCHING FOR ${totalItems[0].total_items} ITEMS`
+               action: `AS SEARCHING FOR ${totalItems} ITEMS`
             };
-            await logChangesToBacklog(searchAll, "0", action, tableName);
+            await logChangesToBacklog(searchAll, "0", action, tableName); */
 
          } else {
             res.status(404).send("WARNING: No data found!");
@@ -41,10 +61,10 @@ function getItemById(db, tableNameParam) {
       const { id } = req.params;
 
       try {
-         const result = await db.getItemById(id);
+         const itemById = await db.getItemById(id);
          
          // To show item data of database
-         const item = result[0];
+         const item = itemById[0];
 
          if (item) {
             res.json(item);
@@ -73,12 +93,12 @@ function addItem(db, tableNameParam) {
       const itemData = req.body;
 
       try {
-         const result = await db.addItem(itemData);
-         console.log(result.info);
+         const newItem = await db.addItem(itemData);
+         console.log(newItem.info);
 
          // To show item data inserted in database
-         const lastItemId = result[0].insertId;
-         const item = await db.getItemById(lastItemId);
+         const lastItemInserted = newItem[0].insertId;
+         const item = await db.getItemById(lastItemInserted);
          res.json(item[0]);
 
          // To log into backlog if any insert have been done
@@ -104,19 +124,19 @@ function updateItem(db, tableNameParam) {
       try {
          const oldItemData = await db.getItemById(id);
          
-         const result = await db.updateItem(id, itemData);
+         const itemUpdated = await db.updateItem(id, itemData);
 
          // To show item data updated in database
-         const itemUpdated = result[0].affectedRows;
+         const item = itemUpdated[0].affectedRows;
          
-         if (itemUpdated === 1) {
+         if (item === 1) {
             const newItemData = await db.getItemById(id);
             res.json(newItemData[0]);
             
             // To log into backlog if any update have been done
             const oldData = oldItemData[0];
             const newData = newItemData[0];
-            const itemDataChanged = processItemDataChanges(oldData, newData);
+            const itemDataChanged = processDataChanges(oldData, newData);
             const action = "update";
             const tableName = tableNameParam;
             await logChangesToBacklog(itemDataChanged, id, action, tableName);
@@ -141,12 +161,12 @@ function deleteItem(db, tableNameParam) {
 
       try {
          const oldItemData = await db.getItemById(id);
-         const result = await db.deleteItem(id);
+         const itemDeleted = await db.deleteItem(id);
          
          // To show item data deleted from database
-         const itemDeleted = result[0].affectedRows;
+         const item = itemDeleted[0].affectedRows;
 
-         if (itemDeleted === 1) {
+         if (item === 1) {
             await db.getItemById(id);
             res.send("WARNING: Item deleted!");
 
