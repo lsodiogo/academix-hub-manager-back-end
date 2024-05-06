@@ -19,7 +19,7 @@ async function logChangesToBacklog(itemData, id, action, tableName) {
          `;
 
          const result = await connection.promise().query(sql, params);
-         return result;
+         return result[0];
 
       } catch(error) {
          console.log(error);

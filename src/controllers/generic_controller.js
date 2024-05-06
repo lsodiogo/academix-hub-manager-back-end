@@ -1,7 +1,11 @@
+const validator = require('validator');
+
 const { processPaginationLinks } = require("../services/process_pagination_links");
 
 const { processDataChanges } = require("../services/process_data_changes");
 const { logChangesToBacklog } = require("../db/backlog_db");
+
+
 
 function getAllItems(db, tableNameParam) {
    
@@ -14,6 +18,7 @@ function getAllItems(db, tableNameParam) {
 
       try {
          const getTotalItems = await db.getTotalItems();
+
          const totalItems = getTotalItems[0].total_items;
 
          const allItems = await db.getAllItems(limit, offset);
@@ -32,15 +37,6 @@ function getAllItems(db, tableNameParam) {
                   results: allItems
                }
             );
-
-            /* // To log into backlog if any search have been done
-            const action = "search";
-            const tableName = tableNameParam;
-            const searchAll = {
-               id: "NO ID AVAILABLE",
-               action: `AS SEARCHING FOR ${totalItems} ITEMS`
-            };
-            await logChangesToBacklog(searchAll, "0", action, tableName); */
 
          } else {
             res.status(404).send("WARNING: No data found!");
@@ -92,12 +88,27 @@ function addItem(db, tableNameParam) {
 
       const itemData = req.body;
 
+      // TO BE ADDED TO SERVICES
+      for (let key in itemData) {
+
+         // Erase any extra blank spaces in the string values
+         if (typeof itemData[key] === "string") {
+            itemData[key] = itemData[key].trim().replace(/\s\s+/g, " ");
+         };
+   
+         // Validation if an item type string is empty
+         if (typeof itemData[key] === "string" && validator.isEmpty(itemData[key])) {
+            console.log(`${key} is empty`);
+         } else {
+            console.log(`${key} is not empty`);
+         };
+      };
+
       try {
          const newItem = await db.addItem(itemData);
-         console.log(newItem.info);
 
          // To show item data inserted in database
-         const lastItemInserted = newItem[0].insertId;
+         const lastItemInserted = newItem.insertId;
          const item = await db.getItemById(lastItemInserted);
          res.json(item[0]);
 
@@ -127,7 +138,7 @@ function updateItem(db, tableNameParam) {
          const itemUpdated = await db.updateItem(id, itemData);
 
          // To show item data updated in database
-         const item = itemUpdated[0].affectedRows;
+         const item = itemUpdated.affectedRows;
          
          if (item === 1) {
             const newItemData = await db.getItemById(id);
@@ -164,7 +175,7 @@ function deleteItem(db, tableNameParam) {
          const itemDeleted = await db.deleteItem(id);
          
          // To show item data deleted from database
-         const item = itemDeleted[0].affectedRows;
+         const item = itemDeleted.affectedRows;
 
          if (item === 1) {
             await db.getItemById(id);

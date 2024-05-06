@@ -75,7 +75,7 @@ async function addItem(itemData) {
       `;
 
       const result = await connection.promise().query(sql, params);
-      return result;
+      return result[0];
 
    } catch(error) {
       console.log(error);
@@ -107,7 +107,7 @@ async function updateItem(id, itemData) {
       `;
 
       const result = await connection.promise().query(sql, params);
-      return result;
+      return result[0];
 
    } catch(error) {
       console.log(error);
@@ -127,7 +127,7 @@ async function deleteItem(id) {
       `;
       
       const result = await connection.promise().query(sql, params);
-      return result;
+      return result[0];
 
    } catch(error) {
       console.log(error);
