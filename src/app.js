@@ -2,10 +2,12 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+const authRouter            = require("./routers/auth_router");
 const usersRouter           = require("./routers/users_router");
 const schoolRouter          = require("./routers/school_router");
 const coursesRouter         = require("./routers/courses_router");
@@ -15,9 +17,11 @@ const lessonsScheduleRouter = require("./routers/lessons_schedule_router");
 const statusRouter          = require("./routers/status_router");
 const usersCategoriesRouter = require("./routers/users_categories_router");
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
 
+app.use("/auth",             authRouter);
 app.use("/users",            usersRouter);
 app.use("/school",           schoolRouter);
 app.use("/courses",          coursesRouter);

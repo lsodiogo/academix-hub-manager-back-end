@@ -64,8 +64,8 @@ async function getItemById(id) {
 
 
 async function addItem(itemData) {
-   const { email, password, category } = itemData;
-   const params = [ email, password, category ];
+   const { email, hashedPassword, category } = itemData;
+   const params = [ email, hashedPassword, category ];
    
    try {
       const sql = `
@@ -129,11 +129,32 @@ async function deleteItem(id) {
 
 
 
+async function userLogin(email) {
+   const params = [ email ];
+
+   try {
+      const sql = `
+         SELECT * FROM users
+         WHERE email = ?
+      `;
+
+      const result = await connection.promise().query(sql, params);
+      return result[0];
+
+   } catch(error) {
+      console.log(error);
+      throw new Error(`WARNING: Something went wrong while trying to log in user ${email}!`);
+   };
+};
+
+
+
 module.exports = {
    getTotalItems,
    getAllItems,
    getItemById,
    addItem,
    updateItem,
-   deleteItem
+   deleteItem,
+   userLogin
 };

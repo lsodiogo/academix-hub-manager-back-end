@@ -1,9 +1,10 @@
-const validator = require('validator');
+const paginationLinksService = require("../services/process_pagination_links");
+const validateDataService    = require("../services/process_validate_data");
+const dataChangesService     = require("../services/process_data_changes");
+const encryptionService      = require("../services/process_encryption");
+const cookieService          = require("../services/process_cookie");
 
-const { processPaginationLinks } = require("../services/process_pagination_links");
-
-const { processDataChanges } = require("../services/process_data_changes");
-const { logChangesToBacklog } = require("../db/backlog_db");
+const backlogDB                  = require("../db/backlog_db");
 
 
 
@@ -27,7 +28,7 @@ function getAllItems(db, tableNameParam) {
          if (allItems) {
 
             // To create pagination
-            const paginationLinks = processPaginationLinks(limit, offset, totalItems, tableNameParam);
+            const paginationLinks = paginationLinksService.processPaginationLinks(limit, offset, totalItems, tableNameParam);
 
             // To show data
             res.json(
@@ -68,7 +69,7 @@ function getItemById(db, tableNameParam) {
             // To log into backlog if any search have been done
             const action = "search";
             const tableName = tableNameParam;
-            await logChangesToBacklog(item, item.id, action, tableName);
+            await backlogDB.logChangesToBacklog(item, item.id, action, tableName);
 
          } else {
             res.status(404).send("WARNING: Item not found!");
@@ -86,23 +87,22 @@ function addItem(db, tableNameParam) {
    
    return async function(req, res) {
 
-      const itemData = req.body;
+      const bodyData = req.body;
+      let itemData;
 
-      // TO BE ADDED TO SERVICES
-      for (let key in itemData) {
+      // To validate if the data is about a user and if so to encrypt the password 
+      if (tableNameParam === "users") {
+         const { email, password, category } = bodyData;
+         const hashedPassword = await encryptionService.createHash(password);
+         itemData = { email, hashedPassword, category };
 
-         // Erase any extra blank spaces in the string values
-         if (typeof itemData[key] === "string") {
-            itemData[key] = itemData[key].trim().replace(/\s\s+/g, " ");
-         };
-   
-         // Validation if an item type string is empty
-         if (typeof itemData[key] === "string" && validator.isEmpty(itemData[key])) {
-            console.log(`${key} is empty`);
-         } else {
-            console.log(`${key} is not empty`);
-         };
+      } else {
+         itemData = bodyData;
       };
+     
+      // To validate if any data null
+      await validateDataService.sanitiseBlankSpaces(itemData);
+      
 
       try {
          const newItem = await db.addItem(itemData);
@@ -115,7 +115,7 @@ function addItem(db, tableNameParam) {
          // To log into backlog if any insert have been done
          const action = "insert";
          const tableName = tableNameParam;
-         await logChangesToBacklog(item[0], item[0].id, action, tableName);
+         await backlogDB.logChangesToBacklog(item[0], item[0].id, action, tableName);
 
       } catch(error) {
          res.status(500).send(error.message);
@@ -147,10 +147,10 @@ function updateItem(db, tableNameParam) {
             // To log into backlog if any update have been done
             const oldData = oldItemData[0];
             const newData = newItemData[0];
-            const itemDataChanged = processDataChanges(oldData, newData);
+            const itemDataChanged = dataChangesService.processDataChanges(oldData, newData);
             const action = "update";
             const tableName = tableNameParam;
-            await logChangesToBacklog(itemDataChanged, id, action, tableName);
+            await backlogDB.logChangesToBacklog(itemDataChanged, id, action, tableName);
 
          } else {
             res.status(404).send("WARNING: Item not found!");
@@ -185,11 +185,56 @@ function deleteItem(db, tableNameParam) {
             const oldData = oldItemData[0];
             const action = "delete";
             const tableName = tableNameParam;
-            await logChangesToBacklog(oldData, id, action, tableName);
+            await backlogDB.logChangesToBacklog(oldData, id, action, tableName);
 
          } else {
             res.status(404).send("WARNING: Item not found!");
          }; 
+
+      } catch(error) {
+         res.status(500).send(error.message);
+      };
+   };
+};
+
+
+
+function loginUser(db, tableNameParam) {
+   
+   return async function(req, res) {
+
+      const { email, password } = req.body;
+
+      try {
+         const item = await db.userLogin(email);
+         const user = item[0];
+
+         if (user) {
+            const hashedPassword = user.hashed_password;
+
+            const result = await encryptionService.verifyHash(hashedPassword, password);
+
+            if (result === true) {
+               const cookieData = {
+                  userEmail: user.email
+               };
+
+               cookieService.setCookie(res, cookieData);
+
+               res.status(200).send("SUCCESS: User logged in!");
+
+               // To log into backlog if any user has logged in
+               const action = "login";
+               const tableName = tableNameParam;
+               await backlogDB.logChangesToBacklog(user, user.id, action, tableName);
+
+            } else {
+               res.status(401).send("WARNING: Wrong password!");
+            };
+
+         } else {
+            res.status(404).send("WARNING: User not found!");
+         };
 
       } catch(error) {
          res.status(500).send(error.message);
@@ -204,5 +249,6 @@ module.exports = {
    getItemById,
    addItem,
    updateItem,
-   deleteItem
+   deleteItem,
+   loginUser
 };

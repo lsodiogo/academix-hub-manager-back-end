@@ -1,4 +1,8 @@
-function validateData(itemData) {
+const validator = require('validator');
+
+
+
+function sanitiseBlankSpaces(itemData) {
    
    for (let key in itemData) {
 
@@ -10,8 +14,14 @@ function validateData(itemData) {
       // Validation if an item type string is empty
       if (typeof itemData[key] === "string" && validator.isEmpty(itemData[key])) {
          console.log(`${key} is empty`);
+
+         // ADD CODE
+
       } else {
          console.log(`${key} is not empty`);
+
+         // ADD CODE
+
       };
    };
 
@@ -21,5 +31,5 @@ function validateData(itemData) {
 
 
 module.exports = {
-   validateData
+   sanitiseBlankSpaces
 };
