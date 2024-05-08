@@ -1,6 +1,6 @@
-function processDataChanges(oldData, newData) {
+function processDataUpdates(oldData, newData) {
    
-   const itemDataChanged = {};
+   const itemDataUpdated = {};
             
    for (const key in newData) {
       if (oldData[key] !== newData[key]) {
@@ -14,15 +14,15 @@ function processDataChanges(oldData, newData) {
             continue; 
          };
                
-         itemDataChanged[key] = { oldData: oldData[key], newData: newData[key] };
+         itemDataUpdated[key] = { oldData: oldData[key], newData: newData[key] };
       };
    };
 
-   return itemDataChanged;
+   return itemDataUpdated;
 };
 
 
 
 module.exports = {
-   processDataChanges
+   processDataUpdates
 };

@@ -64,13 +64,13 @@ async function getItemById(id) {
 
 
 async function addItem(itemData) {
-   const { date, begin, end, description, course_id, status_id } = itemData;
-   const params = [ date, begin, end, description, course_id, status_id ];
+   const { date, begin, end, description, course, status } = itemData;
+   const params = [ date, begin, end, description, course, status ];
    
    try {
       const sql = `
          INSERT INTO lessons_schedule
-         (date, begin, end, description, course_id, status_id)
+         (date, begin_time, end_time, description, course_id, status_id)
          VALUES(?, ?, ?, ?, ?, ?)
       `;
 
