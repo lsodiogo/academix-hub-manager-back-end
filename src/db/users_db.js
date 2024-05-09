@@ -134,7 +134,9 @@ async function userLogin(email) {
 
    try {
       const sql = `
-         SELECT * FROM users
+         SELECT u.*, uc.name AS category_name
+         FROM users u
+         JOIN users_categories uc ON u.user_category_id = uc.id
          WHERE email = ?
       `;
 

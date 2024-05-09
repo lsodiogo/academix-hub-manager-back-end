@@ -8,9 +8,10 @@ function loginUser(db, tableNameParam) {
    
    return async function(req, res) {
 
-      const { email, password } = req.body;
-
       try {
+
+         const { email, password } = req.body;
+         
          const item = await db.userLogin(email);
          const user = item[0];
 
@@ -21,9 +22,10 @@ function loginUser(db, tableNameParam) {
 
             if (result === true) {
                const cookieData = {
-                  userEmail: user.email
+                  userEmail: user.email,
+                  userCategory: user.category_name
                };
-
+               
                cookieService.setCookie(res, cookieData);
 
                res.status(200).send("SUCCESS: User logged in!");
@@ -51,15 +53,10 @@ function loginUser(db, tableNameParam) {
 
 function loginCheck(req, res)  {
 
-   if (req.cookies.LoggedIn) {
-      const data = JSON.parse(req.cookies.LoggedIn);
+   const result = cookieService.verifyCookie(req);
 
-      console.log(req.cookies.LoggedIn);
-
-      console.log(data);
-
+   if (result) {
       res.status(200).send("SUCCESS: User already logged in!");
-
    } else {
       res.status(401).send("WARNING: Please, login!");
    };
