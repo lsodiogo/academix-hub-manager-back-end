@@ -11,4 +11,5 @@ function genericRouter(controller, db, tableName) {
    return router;
 };
 
+
 module.exports = genericRouter;

@@ -4,4 +4,5 @@ const lessonsSchedulesDB    = require("../db/lessons_schedule_db");
 const tableName             = "lessons_schedule";
 const lessonsScheduleRouter = genericRouter(genericController, lessonsSchedulesDB, tableName);
 
+
 module.exports = lessonsScheduleRouter;

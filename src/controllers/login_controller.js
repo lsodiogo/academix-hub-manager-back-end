@@ -1,7 +1,6 @@
-const encryptionService      = require("../services/process_encryption");
-const cookieService          = require("../services/process_cookie");
-const backlogDB              = require("../db/backlog_db");
-
+const encryptionService = require("../services/process_encryption");
+const cookieService = require("../services/process_cookie");
+const backlogDB  = require("../db/backlog_db");
 
 
 function loginUser(db, tableNameParam) {
@@ -50,7 +49,6 @@ function loginUser(db, tableNameParam) {
 };
 
 
-
 function loginCheck(req, res)  {
 
    const result = cookieService.verifyCookie(req);
@@ -61,7 +59,6 @@ function loginCheck(req, res)  {
       res.status(401).send("WARNING: Please, login!");
    };
 };
-
 
 
 module.exports = {

@@ -1,7 +1,6 @@
 const validator = require("validator");
 
 
-
 function sanitiseBlankSpaces(itemData) {
    
    for (let key in itemData) {
@@ -19,7 +18,6 @@ function sanitiseBlankSpaces(itemData) {
 
    return itemData;
 };
-
 
 
 module.exports = {

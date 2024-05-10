@@ -1,7 +1,6 @@
 const connection = require("./connection_db");
 
 
-
 async function getTotalItems() {
    try {
       const sql = `
@@ -18,7 +17,6 @@ async function getTotalItems() {
       throw new Error("WARNING: Something went wrong while getting total of users!");
    };
 };
-
 
 
 async function getAllItems(limit, offset) {
@@ -42,7 +40,6 @@ async function getAllItems(limit, offset) {
 };
 
 
-
 async function getItemById(id) {
    const params = [ id ];
 
@@ -60,7 +57,6 @@ async function getItemById(id) {
       throw new Error(`WARNING: Something went wrong while searching user ${id}!`);
    };
 };
-
 
 
 async function addItem(itemData) {
@@ -82,7 +78,6 @@ async function addItem(itemData) {
       throw new Error(`WARNING: Something went wrong while trying to insert user ${email}!`);
    };
 };
-
 
 
 async function updateItem(id, itemData) {
@@ -108,7 +103,6 @@ async function updateItem(id, itemData) {
 };
 
 
-
 async function deleteItem(id) {
    const params = [ id ];
 
@@ -126,7 +120,6 @@ async function deleteItem(id) {
       throw new Error(`WARNING: Something went wrong while trying to delete user ${id}!`);
    };
 };
-
 
 
 async function userLogin(email) {
@@ -148,7 +141,6 @@ async function userLogin(email) {
       throw new Error(`WARNING: Something went wrong while trying to log in user ${email}!`);
    };
 };
-
 
 
 module.exports = {

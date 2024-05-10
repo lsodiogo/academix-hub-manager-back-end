@@ -4,4 +4,5 @@ const schoolDB          = require("../db/school_db");
 const tableName         = "school";
 const schoolRouter      = genericRouter(genericController, schoolDB, tableName);
 
+
 module.exports = schoolRouter;

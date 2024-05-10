@@ -1,7 +1,6 @@
 const connection = require("./connection_db");
 
 
-
 async function logChangesToBacklog(itemData, id, action, tableName) {
    
    // To check if actually any changes have been done
@@ -27,7 +26,6 @@ async function logChangesToBacklog(itemData, id, action, tableName) {
       };
    };
 };
-
 
 
 module.exports = {

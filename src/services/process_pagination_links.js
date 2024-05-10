@@ -6,12 +6,10 @@ function processPaginationLinks(limit, offset, totalItems, tableNameParam) {
    const lastOffset     = Math.floor((totalItems / limit)) * limit - 1;
 
 
-
    let firstPage = null;
    let prevPage = null;
    let nextPage = null;
    let lastPage = null;
-   
    
 
    // To build the first and previous page link
@@ -27,7 +25,6 @@ function processPaginationLinks(limit, offset, totalItems, tableNameParam) {
    };
    
 
-
    // To build the next and last page
    if (nextOffset < totalItems) {
       nextPage = `http://localhost:3000/${tableNameParam}/?limit=${limit}&offset=${nextOffset}`;
@@ -35,7 +32,6 @@ function processPaginationLinks(limit, offset, totalItems, tableNameParam) {
    };
 
 
-   
    return {
       firstPage: firstPage,
       previous: prevPage,
@@ -43,7 +39,6 @@ function processPaginationLinks(limit, offset, totalItems, tableNameParam) {
       lastPage: lastPage
    };
 };
-
 
 
 module.exports = {

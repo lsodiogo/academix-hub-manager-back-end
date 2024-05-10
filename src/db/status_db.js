@@ -1,7 +1,6 @@
 const connection = require("./connection_db");
 
 
-
 async function getTotalItems() {
    try {
       const sql = `
@@ -18,7 +17,6 @@ async function getTotalItems() {
       throw new Error("WARNING: Something went wrong while getting total of status!");
    };
 };
-
 
 
 async function getAllItems(limit, offset) {
@@ -42,7 +40,6 @@ async function getAllItems(limit, offset) {
 };
 
 
-
 async function getItemById(id) {
    const params = [ id ];
 
@@ -60,7 +57,6 @@ async function getItemById(id) {
       throw new Error(`WARNING: Something went wrong while searching status ${id}!`);
    };
 };
-
 
 
 async function addItem(itemData) {
@@ -82,7 +78,6 @@ async function addItem(itemData) {
       throw new Error(`WARNING: Something went wrong while trying to insert status ${name}!`);
    };
 };
-
 
 
 async function updateItem(id, itemData) {
@@ -107,7 +102,6 @@ async function updateItem(id, itemData) {
 };
 
 
-
 async function deleteItem(id) {
    const params = [ id ];
 
@@ -125,7 +119,6 @@ async function deleteItem(id) {
       throw new Error(`WARNING: Something went wrong while trying to delete status ${id}!`);
    };
 };
-
 
 
 module.exports = {

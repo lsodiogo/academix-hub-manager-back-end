@@ -14,7 +14,6 @@ function setCookie(res, cookieData) {
 };
 
 
-
 function verifyCookie(req) {
    if (req.signedCookies.LoggedIn) {
       const data = JSON.parse(req.signedCookies.LoggedIn);
@@ -22,7 +21,6 @@ function verifyCookie(req) {
       return data;
    };
 };
-
 
 
 module.exports = {

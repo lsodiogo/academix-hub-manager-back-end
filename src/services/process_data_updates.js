@@ -22,7 +22,6 @@ function processDataUpdates(oldData, newData) {
 };
 
 
-
 module.exports = {
    processDataUpdates
 };

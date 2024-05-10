@@ -1,7 +1,6 @@
 const argon2 = require("argon2");
 
 
-
 async function createHash(password) {
    try {
       const hash = await argon2.hash(password);
@@ -14,7 +13,6 @@ async function createHash(password) {
 };
 
 
-
 async function verifyHash(hash, password) {
    try {
       const result = await argon2.verify(hash, password);    
@@ -25,7 +23,6 @@ async function verifyHash(hash, password) {
       return false;
    };
 };
-
 
 
 module.exports = {
