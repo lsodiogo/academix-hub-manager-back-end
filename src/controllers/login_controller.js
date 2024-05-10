@@ -1,6 +1,6 @@
 const encryptionService = require("../services/process_encryption");
 const cookieService = require("../services/process_cookie");
-const backlogDB  = require("../db/backlog_db");
+const backlogDB = require("../db/backlog_db");
 
 
 function loginUser(db, tableNameParam) {
@@ -21,8 +21,9 @@ function loginUser(db, tableNameParam) {
 
             if (result === true) {
                const cookieData = {
+                  userId: user.id,
                   userEmail: user.email,
-                  userCategory: user.category_name
+                  userCategory: user.category
                };
                
                cookieService.setCookie(res, cookieData);
@@ -32,7 +33,7 @@ function loginUser(db, tableNameParam) {
                // To log into backlog if any user has logged in
                const action = "login";
                const tableName = tableNameParam;
-               await backlogDB.logChangesToBacklog(user, user.id, action, tableName);
+               await backlogDB.logChangesToBacklog(user, user.id, action, tableName, user.email);
 
             } else {
                res.status(401).send("WARNING: Wrong password!");

@@ -45,7 +45,8 @@ async function getItemById(id) {
 
    try {
       const sql = `
-         SELECT * FROM school
+         SELECT *
+         FROM school
          WHERE id = ?
       `;
 

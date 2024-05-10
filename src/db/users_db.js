@@ -24,7 +24,7 @@ async function getAllItems(limit, offset) {
    
    try {
       const sql = `
-         SELECT *
+         SELECT id, email, category, created_At, updated_at
          FROM users
          LIMIT ?
          OFFSET ?
@@ -45,7 +45,8 @@ async function getItemById(id) {
 
    try {
       const sql = `
-         SELECT * FROM users
+         SELECT id, email, category, created_At, updated_at
+         FROM users
          WHERE id = ?
       `;
 
@@ -66,7 +67,7 @@ async function addItem(itemData) {
    try {
       const sql = `
          INSERT INTO users
-         (email, hashed_password, user_category_id)
+         (email, hashed_password, category)
          VALUES(?, ?, ?)
       `;
 
@@ -81,15 +82,15 @@ async function addItem(itemData) {
 
 
 async function updateItem(id, itemData) {
-   const { email, password, category } = itemData;
-   const params = [ email, password, category, id ];
+   const { email, hashedPassword, category } = itemData;
+   const params = [ email, hashedPassword, category, id ];
    
    try {
       const sql = `
          UPDATE users
          SET email = ?,
             hashed_password = ?,
-            user_category_id = ?
+            category = ?
          WHERE id = ?
       `;
 
@@ -127,9 +128,8 @@ async function userLogin(email) {
 
    try {
       const sql = `
-         SELECT u.*, uc.name AS category_name
-         FROM users u
-         JOIN users_categories uc ON u.user_category_id = uc.id
+         SELECT *
+         FROM users
          WHERE email = ?
       `;
 

@@ -19,7 +19,7 @@ const teachersRouter = require("./routers/teachers_router");
 const studentsRouter = require("./routers/students_router");
 const lessonsScheduleRouter = require("./routers/lessons_schedule_router");
 const statusRouter = require("./routers/status_router");
-const usersCategoriesRouter = require("./routers/users_categories_router");
+const backlogRouter = require("./routers/backlog_router");
 
 
 app.use(express.json());
@@ -35,7 +35,7 @@ app.use("/teachers", teachersRouter);
 app.use("/students", studentsRouter);
 app.use("/lessons_schedule", lessonsScheduleRouter);
 app.use("/status", statusRouter);
-app.use("/users_categories", usersCategoriesRouter);
+app.use("/backlog", backlogRouter);
 
 
 app.listen(port, function() {

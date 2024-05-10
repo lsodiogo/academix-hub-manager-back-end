@@ -45,7 +45,8 @@ async function getItemById(id) {
 
    try {
       const sql = `
-         SELECT * FROM status
+         SELECT *
+         FROM status
          WHERE id = ?
       `;
 

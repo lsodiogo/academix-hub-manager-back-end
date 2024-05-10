@@ -45,7 +45,8 @@ async function getItemById(id) {
 
    try {
       const sql = `
-         SELECT * FROM lessons_schedule
+         SELECT *
+         FROM lessons_schedule
          WHERE id = ?
       `;
 
@@ -120,7 +121,7 @@ async function deleteItem(id) {
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while trying to delete user category ${id}!`);
+      throw new Error(`WARNING: Something went wrong while trying to delete lesson schedule ${id}!`);
    };
 };
 
