@@ -14,7 +14,10 @@ async function getTotalItems() {
 
    } catch(error) {
       console.log(error);
-      throw new Error("WARNING: Something went wrong while getting total of courses!");
+      return {
+         error: "WARNING",
+         message: "Something went wrong while getting total of courses!"
+      };
    };
 };
 
@@ -35,7 +38,10 @@ async function getAllItems(limit, offset) {
 
    } catch(error) {
       console.log(error);
-      throw new Error("WARNING: Something went wrong while searching all courses!");
+      return {
+         error: "WARNING",
+         message: "Something went wrong while searching all courses!"
+      };
    };
 };
 
@@ -55,7 +61,10 @@ async function getItemById(id) {
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while searching course: ${id}!`);
+      return {
+         error: "WARNING",
+         message: `Something went wrong while searching course: ${id}!`
+      };
    };
 };
 
@@ -76,7 +85,10 @@ async function addItem(itemData) {
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while trying to insert course: ${name}!`);
+      return {
+         error: "WARNING",
+         message: `Something went wrong while trying to insert course: ${name}!`
+      };
    };
 };
 
@@ -104,7 +116,10 @@ async function updateItem(id, itemData) {
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while trying to update course: ${name}!`);
+      return {
+         error: "WARNING",
+         message: `Something went wrong while trying to update course: ${name}!`
+      };
    };
 };
 
@@ -123,7 +138,10 @@ async function deleteItem(id) {
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while trying to delete course: ${id}!`);
+      return {
+         error: "WARNING",
+         message: `Something went wrong while trying to delete course: ${id}!`
+      };
    };
 };
 

@@ -14,7 +14,10 @@ async function getTotalItems() {
 
    } catch(error) {
       console.log(error);
-      throw new Error("WARNING: Something went wrong while getting total of logs!");
+      return {
+         error: "WARNING",
+         message: "Something went wrong while getting total of logs!"
+      };
    };
 };
 
@@ -36,7 +39,10 @@ async function getAllItems(limit, offset) {
 
    } catch(error) {
       console.log(error);
-      throw new Error("WARNING: Something went wrong while searching all logs!");
+      return {
+         error: "WARNING",
+         message: "Something went wrong while searching all logs!"
+      };
    };
 };
 
@@ -61,7 +67,10 @@ async function logChangesToBacklog(itemData, item_id, action, tableName, userLog
 
       } catch(error) {
          console.log(error);
-         throw new Error("WARNING: Something went wrong while trying to log changes to backlog!");
+         return {
+            error: "WARNING",
+            message: "Something went wrong while trying to log changes to backlog!"
+         };
       };
    };
 };

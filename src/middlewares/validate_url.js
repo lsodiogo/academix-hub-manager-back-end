@@ -2,7 +2,11 @@ function isNumericId(req, res, next) {
    const { id } = req.params;
    
    if (isNaN(parseInt(id))) {
-      res.status(400).send("WARNING: Invalid URL!");
+      res.status(400).json({
+         error: "WARNING",
+         message: "Invalid URL!"
+      });
+      
       return;    
    };
 

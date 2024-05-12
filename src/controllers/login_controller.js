@@ -28,7 +28,10 @@ function loginUser(db, tableNameParam) {
                
                cookieService.setCookie(res, cookieData);
 
-               res.status(200).send("SUCCESS: User logged in!");
+               res.status(200).json({
+                  error: "SUCCESS",
+                  message: "User logged in!"
+               });
 
                // To log into backlog if any user has logged in
                const action = "login";
@@ -36,15 +39,24 @@ function loginUser(db, tableNameParam) {
                await backlogDB.logChangesToBacklog(user, user.id, action, tableName, user.email);
 
             } else {
-               res.status(401).send("WARNING: Wrong password!");
+               res.status(401).json({
+                  error: "WARNING",
+                  message: "Wrong password!"
+               });
             };
 
          } else {
-            res.status(404).send("WARNING: User not found!");
+            res.status(404).json({
+               error: "WARNING",
+               message: "User not found!"
+            });
          };
 
       } catch(error) {
-         res.status(500).send(error.message);
+         res.status(500).json({
+            error,
+            message
+         });
       };
    };
 };
@@ -56,9 +68,15 @@ function loginCheck(req, res)  {
    console.log(result)
 
    if (result) {
-      res.status(200).send(`SUCCESS: ${result.userEmail} already logged in!`);
+      res.status(200).json({
+         error: "SUCCESS",
+         message: `${result.userEmail} already logged in!`
+      });
    } else {
-      res.status(401).send("WARNING: Please, login!");
+      res.status(401).json({
+         error: "WARNING",
+         message: "Please, login!"
+      });
    };
 };
 

@@ -18,7 +18,11 @@ function getAllItems(db, tableNameParam) {
 
       // To check if user is logged in
       if (!userLoggedIn) {
-         res.status(401).send("WARNING: Please, login!");
+         res.status(401).json({
+            error: "WARNING",
+            message: "Please, login!"
+         });
+
          return;
       };
 
@@ -66,14 +70,23 @@ function getAllItems(db, tableNameParam) {
                );
 
             } else {
-               res.status(404).send("WARNING: No data found!");
+               res.status(404).json({
+                  error: "WARNING",
+                  message: "No data found!"
+               });
             };
 
          } catch(error) {
-            res.status(500).send(error.message);
+            res.status(500).json({
+               error,
+               message
+            });
          };
       } else {
-         res.status(401).send("WARNING: User not authorized!");
+         res.status(401).json({
+            error: "WARNING",
+            message: "User not authorized!"
+         });
       };
    };
 };
@@ -92,7 +105,11 @@ function getItemById(db, tableNameParam) {
 
       // To check if user is logged in
       if (!userLoggedIn) {
-         res.status(401).send("WARNING: Please, login!");
+         res.status(401).json({
+            error: "WARNING",
+            message: "Please, login!"
+         });
+
          return;
       };
 
@@ -134,14 +151,23 @@ function getItemById(db, tableNameParam) {
                await backlogDB.logChangesToBacklog(item, item.id, action, tableName, userLoggedInEmail);
 
             } else {
-               res.status(404).send("WARNING: Item not found!");
+               res.status(404).json({
+                  error: "WARNING",
+                  message: "Item not found!"
+               });
             };
 
          } catch(error) {
-            res.status(500).send(error.message);
+            res.status(500).json({
+               error,
+               message
+            });
          };
       } else {
-         res.status(401).send("WARNING: User not authorized!");
+         res.status(401).json({
+            error: "WARNING",
+            message: "User not authorized!"
+         });
       };
    };
 };
@@ -158,7 +184,11 @@ function addItem(db, tableNameParam) {
 
       // To check if user is logged in (no login required for new user insert)
       if (!userLoggedIn && tableNameParam != "users") {
-         res.status(401).send("WARNING: Please, login!");
+         res.status(401).json({
+            error: "WARNING",
+            message: "Please, login!"
+         });
+
          return;
       };
 
@@ -212,11 +242,17 @@ function addItem(db, tableNameParam) {
             await backlogDB.logChangesToBacklog(item[0], item[0].id, action, tableName, userLoggedInEmail);
 
          } catch(error) {
-            res.status(500).send(error.message);
+            res.status(500).json({
+               error,
+               message
+            });
          };
 
       } else {
-         res.status(401).send("WARNING: User not authorized!");
+         res.status(401).json({
+            error: "WARNING",
+            message: "User not authorized!"
+         });
       };
    };
 };
@@ -235,7 +271,11 @@ function updateItem(db, tableNameParam) {
 
       // To check if user is logged in
       if (!userLoggedIn) {
-         res.status(401).send("WARNING: Please, login!");
+         res.status(401).json({
+            error: "WARNING",
+            message: "Please, login!"
+         });
+
          return;
       };
 
@@ -293,15 +333,24 @@ function updateItem(db, tableNameParam) {
                await backlogDB.logChangesToBacklog(itemDataUpdated, id, action, tableName, userLoggedInEmail);
    
             } else {
-               res.status(404).send("WARNING: Item not found!");
+               res.status(404).json({
+                  error: "WARNING",
+                  message: "Item not found!"
+               });
             }; 
    
          } catch(error) {
-            res.status(500).send(error.message);
+            res.status(500).json({
+               error,
+               message
+            });
          };
 
       } else {
-         res.status(401).send("WARNING: User not authorized!");
+         res.status(401).json({
+            error: "WARNING",
+            message: "User not authorized!"
+         });
       };
    };
 };
@@ -320,7 +369,11 @@ function deleteItem(db, tableNameParam) {
 
       // To check if user is logged in
       if (!userLoggedIn) {
-         res.status(401).send("WARNING: Please, login!");
+         res.status(401).json({
+            error: "WARNING",
+            message: "Please, login!"
+         });
+
          return;
       };
 
@@ -346,7 +399,10 @@ function deleteItem(db, tableNameParam) {
             // To check if item exists
             if (item === 1) {
                await db.getItemById(id);
-               res.status(200).send("SUCCESS: Item deleted!");
+               res.status(200).json({
+                  error: "SUCCESS",
+                  message: "Item deleted!"
+               });
 
                // To log into backlog if any delete have been done
                const oldData = oldItemData[0];
@@ -356,15 +412,24 @@ function deleteItem(db, tableNameParam) {
                await backlogDB.logChangesToBacklog(oldData, id, action, tableName, userLoggedInEmail);
 
             } else {
-               res.status(404).send("WARNING: Item not found!");
+               res.status(404).json({
+                  error: "WARNING",
+                  message: "Item not found!"
+               });
             }; 
 
          } catch(error) {
-            res.status(500).send(error.message);
+            res.status(500).json({
+               error,
+               message
+            });
          };
 
       } else {
-         res.status(401).send("WARNING: User not authorized!");
+         res.status(401).json({
+            error: "WARNING",
+            message: "User not authorized!"
+         });
       };
    };
 };

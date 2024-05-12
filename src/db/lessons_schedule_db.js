@@ -14,7 +14,10 @@ async function getTotalItems() {
 
    } catch(error) {
       console.log(error);
-      throw new Error("WARNING: Something went wrong while getting total of lessons schedule!");
+      return {
+         error: "WARNING",
+         message: "Something went wrong while getting total of lessons schedule!"
+      };
    };
 };
 
@@ -35,7 +38,10 @@ async function getAllItems(limit, offset) {
 
    } catch(error) {
       console.log(error);
-      throw new Error("WARNING: Something went wrong while searching all lessons schedule!");
+      return {
+         error: "WARNING",
+         message: "Something went wrong while searching all lessons schedule!"
+      };
    };
 };
 
@@ -55,7 +61,10 @@ async function getItemById(id) {
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while searching lesson schedule ${id}!`);
+      return {
+         error: "WARNING",
+         message: `Something went wrong while searching lesson schedule ${id}!`
+      };
    };
 };
 
@@ -76,7 +85,10 @@ async function addItem(itemData) {
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while trying to insert lesson schedule ${name}!`);
+      return {
+         error: "WARNING",
+         message: `Something went wrong while trying to insert lesson schedule ${date}!`
+      };
    };
 };
 
@@ -102,7 +114,10 @@ async function updateItem(id, itemData) {
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while trying to update lesson schedule ${id}!`);
+      return {
+         error: "WARNING",
+         message: `Something went wrong while trying to update lesson schedule ${id}!`
+      };
    };
 };
 
@@ -121,7 +136,10 @@ async function deleteItem(id) {
 
    } catch(error) {
       console.log(error);
-      throw new Error(`WARNING: Something went wrong while trying to delete lesson schedule ${id}!`);
+      return {
+         error: "WARNING",
+         message: `Something went wrong while trying to delete lesson schedule ${id}!`
+      };
    };
 };
 
