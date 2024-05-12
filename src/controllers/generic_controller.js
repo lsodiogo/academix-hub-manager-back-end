@@ -24,7 +24,7 @@ function getAllItems(db, tableNameParam) {
 
       
       // To check if user logged in is:
-         // Admin (full access)
+         // Admins (full access)
          // Teacher (full access, except users table and backlog table)
          // Student (full access, except users table and backlog table)
       if (
@@ -102,15 +102,15 @@ function getItemById(db, tableNameParam) {
 
 
       // To check if user logged in is:
-         // Admin (full access)
-         // Teacher (full access, except users specific id)
-         // Student (no access to users and teachers specific id, only self-search)
+         // Admins (full access)
+         // Teacher (limited access, no access to users table)
+         // Student (limited access, no access to users table and teachers table and when students table only with self-search)
       if (
          (userLoggedIn.userCategory === "admin" ||
             (userLoggedIn.userCategory === "teacher" && tableNameParam != "users")
          ) ||
          (userLoggedIn.userCategory === "student" &&
-            ((tableNameParam != "users" && tableNameParam != "teachers") &&
+            ((tableNameParam != "users" && tableNameParam != "teachers") ||
                (tableNameParam === "students" && userLoggedIn.userEmail === itemById[0].email)
             )
          )
@@ -164,7 +164,7 @@ function addItem(db, tableNameParam) {
 
 
       // To check if user logged in is:
-         // Admin (full access) or new user creation (no login required)
+         // Admins (full access) or new user creation (no login required)
       if (tableNameParam === "users" || userLoggedIn.userCategory === "admin") {
    
          try {
@@ -241,7 +241,7 @@ function updateItem(db, tableNameParam) {
 
 
       // To check if user logged in is:
-         // Admin (full access), except for user updates, which must be done by the user themselves
+         // Admins: only admins have permission to update data, except for users updates, which must be done only by the user themselves 
       if ((userLoggedIn.userCategory === "admin" && tableNameParam != "users") || (tableNameParam === "users" && id == userLoggedIn.userId)) {
       
          try {
@@ -326,7 +326,7 @@ function deleteItem(db, tableNameParam) {
 
 
       // To check if user logged in is:
-         // Admin (full access), except for user deletes, which must be done by the user themselves
+         // Admins: only admins have permission to delete data, except for users deletes, which must be done only by the user themselves
       if ((userLoggedIn.userCategory === "admin" && tableNameParam != "users") || (tableNameParam === "users" && id == userLoggedIn.userId)) {
    
          try {

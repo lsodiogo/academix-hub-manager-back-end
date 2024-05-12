@@ -53,9 +53,10 @@ function loginUser(db, tableNameParam) {
 function loginCheck(req, res)  {
 
    const result = cookieService.verifyCookie(req);
+   console.log(result)
 
    if (result) {
-      res.status(200).send("SUCCESS: User already logged in!");
+      res.status(200).send(`SUCCESS: ${result.userEmail} already logged in!`);
    } else {
       res.status(401).send("WARNING: Please, login!");
    };
