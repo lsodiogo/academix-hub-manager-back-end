@@ -13,13 +13,15 @@
   - [Delete data from (table name) by ID](#delete-data-from-table-name-by-id)
   - [Get backlog](#get-backlog)
 
-
+---
+---
 
 # BRIEFING
 
 ![BRIEFING](https://github.com/lsodiogo/academix-hub-manager/blob/main/docs/briefing.svg)
 
-
+---
+---
 
 # DATABASE INDEXES & RELATIONS
 
@@ -36,7 +38,8 @@
 | teachers | names + surnames → unique | status_id
 | users | email → unique |
 
-
+---
+---
 
 # ENDPOINTS
 
@@ -45,12 +48,19 @@
 This app uses the following endpoints and methods:
 
 [`POST /login/`](#login)
+
 [`GET /login/`](#check-if-logged-in)
+
 [`GET /(table name)/`](#get-table-names-all-results)
+
 [`GET /(table name)/:id`](#get-table-names-results-by-id)
+
 [`POST /(table name)/`](#insert-data-into-table-name)
+
 [`PUT /(table name)/:id`](#update-data-into-table-name-by-id)
+
 [`DELETE /(table name)/:id`](#delete-data-from-table-name-by-id)
+
 [`GET /backlog/`](#get-backlog)
 
 | ⚠️ WARNING |
@@ -58,7 +68,8 @@ This app uses the following endpoints and methods:
 | Backlog table only access with admins users |
 | User most be logged in |
 
-
+---
+---
 
 ## Login
 
@@ -77,7 +88,8 @@ Example POST body for login table:
 }
 ```
 
-
+---
+---
 
 ## Check if logged in
 
@@ -91,7 +103,8 @@ Example POST body for login table:
 res.status(200).send(`SUCCESS: ${result.userEmail} already logged in!`);
 ```
 
-
+---
+---
 
 ## Get (table name)'s all results
 
@@ -153,7 +166,8 @@ Example response for users table:
 }
 ```
 
-
+---
+---
 
 ## Get (table name)'s results by ID
 
@@ -187,7 +201,8 @@ Example response for courses table:
 }
 ```
 
-
+---
+---
 
 ## Insert data into (table name)
 
@@ -211,7 +226,8 @@ Example POST body for users table:
 }
 ```
 
-
+---
+---
 
 ## Update data into (table name) by ID
 
@@ -240,7 +256,8 @@ Example POST body for teachers table:
 }
 ```
 
-
+---
+---
 
 ## Delete data from (table name) by ID
 
@@ -252,7 +269,8 @@ Example POST body for teachers table:
 | ------------- | ------ |
 | Admins | Only admins have permission to delete data, except for users deletes, which must be done only by the user themselves |
 
-
+---
+---
 
 ## Get backlog
 
