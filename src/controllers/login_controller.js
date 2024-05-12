@@ -64,13 +64,13 @@ function loginUser(db, tableNameParam) {
 
 function loginCheck(req, res)  {
 
+   // To check if user is logged in
    const result = cookieService.verifyCookie(req);
-   console.log(result)
 
    if (result) {
       res.status(200).json({
          error: "SUCCESS",
-         message: `${result.userEmail} already logged in!`
+         message: `User ${result.userEmail} already logged in!`
       });
    } else {
       res.status(401).json({
@@ -81,7 +81,27 @@ function loginCheck(req, res)  {
 };
 
 
+function logoutUser(req, res)  {
+
+   // To logout user
+   const result = cookieService.clearCookie(req, res);
+
+   if (result) {
+      res.status(200).json({
+         error: "SUCCESS",
+         message: `Logout successful!`
+      });
+   } else {
+      res.status(404).json({
+         error: "WARNING",
+         message: "No user logged in!"
+      });
+   };
+};
+
+
 module.exports = {
    loginUser,
-   loginCheck
+   loginCheck,
+   logoutUser
 };

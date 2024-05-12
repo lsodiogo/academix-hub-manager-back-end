@@ -11,6 +11,7 @@
   - [Overview](#overview)
   - [Login](#login)
   - [Check if logged in](#check-if-logged-in)
+  - [Logout](#logout)
   - [Get (table name)'s all results](#get-table-names-all-results)
   - [Get (table name)'s results by ID](#get-table-names-results-by-id)
   - [Insert data into (table name)](#insert-data-into-table-name)
@@ -55,6 +56,8 @@ This app uses the following endpoints and methods:
 [`POST /login/`](#login)
 
 [`GET /login/`](#check-if-logged-in)
+
+[`GET /login/logout`](#logout)
 
 [`GET /(table name)/`](#get-table-names-all-results)
 
@@ -107,7 +110,25 @@ Example POST body for login table:
 ```
 res.status(200).json({
 	error: "SUCCESS",
-   message: `${result.userEmail} already logged in!`
+	message: `User ${result.userEmail} already logged in!`
+});
+```
+
+---
+---
+
+## Logout
+
+### Request 
+
+`GET /login/logout`
+
+### Response
+
+```
+res.status(200).json({
+	error: "SUCCESS",
+	message: `Logout successful!`
 });
 ```
 

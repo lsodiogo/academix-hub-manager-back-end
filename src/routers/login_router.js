@@ -6,5 +6,6 @@ const tableName       = "users";
 
 router.post("/", loginController.loginUser(usersDB, tableName));
 router.get("/",  loginController.loginCheck);
+router.get("/logout", loginController.logoutUser);
 
 module.exports = router;

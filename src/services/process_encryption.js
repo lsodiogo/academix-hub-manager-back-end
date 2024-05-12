@@ -3,6 +3,7 @@ const argon2 = require("argon2");
 
 async function createHash(password) {
    try {
+      // To create an encrypted password
       const hash = await argon2.hash(password);
       return hash;
 
@@ -15,6 +16,7 @@ async function createHash(password) {
 
 async function verifyHash(hash, password) {
    try {
+      // To verify the encrypted password
       const result = await argon2.verify(hash, password);    
       return result;
 

@@ -9,6 +9,10 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const port = process.env.PORT || 3000;
 const secretKey = process.env.SECRET_KEY;
+const corsOptions = {
+   origin: "http://localhost:5173",
+   credentials: true
+};
 
 
 const loginRouter = require("./routers/login_router");
@@ -23,7 +27,7 @@ const backlogRouter = require("./routers/backlog_router");
 
 
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParser(secretKey));
 
 

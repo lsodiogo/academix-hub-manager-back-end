@@ -2,7 +2,6 @@ function setCookie(res, cookieData) {
    
    // Data to be added to cookie
    const jsonCookieData = JSON.stringify(cookieData);
-   console.log(jsonCookieData);
 
    res.cookie("LoggedIn", jsonCookieData, {
       httpOnly: true,
@@ -15,6 +14,8 @@ function setCookie(res, cookieData) {
 
 
 function verifyCookie(req) {
+
+   // To verify cookie
    if (req.signedCookies.LoggedIn) {
       const data = JSON.parse(req.signedCookies.LoggedIn);
 
@@ -23,7 +24,19 @@ function verifyCookie(req) {
 };
 
 
+function clearCookie(req, res) {
+
+   // To clear cookie
+   if (req.signedCookies.LoggedIn) {
+      const result = res.clearCookie("LoggedIn");
+
+      return result;
+   };
+};
+
+
 module.exports = {
    setCookie,
-   verifyCookie
+   verifyCookie,
+   clearCookie
 };
