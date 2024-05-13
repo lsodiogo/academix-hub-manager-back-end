@@ -22,13 +22,6 @@
 ---
 ---
 
-# BRIEFING
-
-![BRIEFING](https://github.com/lsodiogo/academix-hub-manager/blob/main/docs/briefing.svg)
-
----
----
-
 # DATABASE INDEXES & RELATIONS
 
 | TABLES | INDEXES | RELATIONS |
@@ -310,3 +303,10 @@ Example POST body for teachers table:
 | USER CATEGORY | ACCESS | 
 | ------------- | ------ |
 | Admins | Only admins have permission to see backlog |
+
+---
+---
+
+# BRIEFING
+
+![BRIEFING](https://github.com/lsodiogo/academix-hub-manager/blob/main/docs/briefing.svg)
