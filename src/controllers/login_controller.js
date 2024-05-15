@@ -54,8 +54,8 @@ function loginUser(db, tableNameParam) {
 
       } catch(error) {
          res.status(500).json({
-            error,
-            message
+            error: "WARNING",
+            message: error.message
          });
       };
    };

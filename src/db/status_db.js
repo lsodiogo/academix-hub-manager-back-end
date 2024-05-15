@@ -14,10 +14,7 @@ async function getTotalItems() {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: "Something went wrong while getting total of status!"
-      };
+      throw new Error("Something went wrong while getting total of status!");
    };
 };
 
@@ -38,10 +35,7 @@ async function getAllItems(limit, offset) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: "Something went wrong while searching all status!"
-      };
+      throw new Error("Something went wrong while searching all status!");
    };
 };
 
@@ -61,10 +55,7 @@ async function getItemById(id) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: `Something went wrong while searching status ${id}!`
-      };
+      throw new Error(`Something went wrong while searching status ${id}!`);
    };
 };
 
@@ -85,10 +76,7 @@ async function addItem(itemData) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: `Something went wrong while trying to insert status ${name}!`
-      };
+      throw new Error(`Something went wrong while trying to insert status ${name}!`);
    };
 };
 
@@ -110,10 +98,7 @@ async function updateItem(id, itemData) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: `Something went wrong while trying to update status ${id}!`
-      };
+      throw new Error(`Something went wrong while trying to update status ${id}!`);
    };
 };
 
@@ -132,10 +117,7 @@ async function deleteItem(id) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: `Something went wrong while trying to delete status ${id}!`
-      };
+      throw new Error(`Something went wrong while trying to delete status ${id}!`);
    };
 };
 

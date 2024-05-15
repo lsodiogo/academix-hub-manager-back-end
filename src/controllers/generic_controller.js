@@ -78,8 +78,8 @@ function getAllItems(db, tableNameParam) {
 
          } catch(error) {
             res.status(500).json({
-               error,
-               message
+               error: "WARNING",
+               message: error.message
             });
          };
       } else {
@@ -120,18 +120,17 @@ function getItemById(db, tableNameParam) {
 
       // To check if user logged in is:
          // Admins (full access)
-         // Teacher (limited access, no access to users table)
-         // Student (limited access, no access to users table and teachers table and when students table only with self-search)
-      if (
-         (userLoggedIn.userCategory === "admin" ||
-            (userLoggedIn.userCategory === "teacher" && tableNameParam != "users")
-         ) ||
-         (userLoggedIn.userCategory === "student" &&
-            ((tableNameParam != "users" && tableNameParam != "teachers") ||
-               (tableNameParam === "students" && userLoggedIn.userEmail === itemById[0].email)
+         // Teacher (limited access, no access to users table, except user self-search)
+         // Student (limited access, no access to users table, except user self-search, and no access to teachers table and when students table only with self-search)
+      if ((userLoggedIn.userCategory === "admin") ||
+            ((tableNameParam === "users" && id == userLoggedIn.userId) ||
+               (userLoggedIn.userCategory === "teacher" && tableNameParam != "users") ||
+               (userLoggedIn.userCategory === "student" &&
+                  ((tableNameParam != "users" && tableNameParam != "teachers") ||
+                  (tableNameParam === "students" && userLoggedIn.userEmail === itemById[0].email))
+               )
             )
-         )
-      ) {
+         ) {
 
          try {
             
@@ -159,8 +158,8 @@ function getItemById(db, tableNameParam) {
 
          } catch(error) {
             res.status(500).json({
-               error,
-               message
+               error: "WARNING",
+               message: error.message
             });
          };
       } else {
@@ -177,26 +176,82 @@ function getItemById(db, tableNameParam) {
 function addItem(db, tableNameParam) {
    
    return async function(req, res) {
-      
+
       // To get cookies
       const userLoggedIn = cookieService.verifyCookie(req);
 
 
-      // To check if user is logged in (no login required for new user insert)
-      if (!userLoggedIn && tableNameParam != "users") {
+      // To check if user is logged in and if it's admin
+      if (!userLoggedIn) {
          res.status(401).json({
             error: "WARNING",
             message: "Please, login!"
          });
 
          return;
+
+      } else if (userLoggedIn.userCategory != "admin") {
+         res.status(401).json({
+            error: "WARNING",
+            message: "User not authorized!"
+         });
+
+         return;
       };
 
 
+
+
+
+
+
+      let userTeacherTrue = false;
+      let userStudentTrue = false;
+      let userAdminTrue = false;
+
+      if (tableNameParam === "users" && req.body.category === "teacher") {
+         const teacherByEmail = await db.getTeacherByEmail(req.body.email);
+
+         if (!teacherByEmail[0]) {
+            res.status(404).json({
+               error: "WARNING",
+               message: "User not found!"
+            });
+            console.log("user email e teacher email diferentes, bye")
+            return;
+         } else {
+            console.log("user email e teacher email iguais")
+            userTeacherTrue = true;
+         }
+      }
+
+      if (tableNameParam === "users" && req.body.category === "student") {
+         const studentByEmail = await db.getStudentByEmail(req.body.email);
+
+         if (!studentByEmail[0]) {
+            res.status(404).json({
+               error: "WARNING",
+               message: "User not found!"
+            });
+            console.log("user email e student email sao diferentes, bye")
+            return;
+         } else {
+            console.log("user email e student email sao iguais")
+            userStudentTrue = true;
+         }
+      }
+
+      if (tableNameParam === "users" && req.body.category === "admin") {
+         userAdminTrue = true;
+      }
+
+
+
+
       // To check if user logged in is:
-         // Admins (full access) or new user creation (no login required)
-      if (tableNameParam === "users" || userLoggedIn.userCategory === "admin") {
-   
+         // Admins: only admins have permission to insert data and when a new user with category of teacher or student, email must be already entered at database of teachers or students
+      if (tableNameParam != "users" || tableNameParam === "users" && (userAdminTrue || userTeacherTrue || userStudentTrue)) {
+         
          try {
 
             const bodyData = req.body;
@@ -231,28 +286,20 @@ function addItem(db, tableNameParam) {
             // To log into backlog if any insert have been done
             const action = "insert";
             const tableName = tableNameParam;
-            let userLoggedInEmail;
-
-            if (tableNameParam === "users"){
-               userLoggedInEmail = item[0].email;
-            } else {
-               userLoggedInEmail = userLoggedIn.userEmail;
-            };
+            const userLoggedInEmail = userLoggedIn.userEmail
             
             await backlogDB.logChangesToBacklog(item[0], item[0].id, action, tableName, userLoggedInEmail);
 
          } catch(error) {
             res.status(500).json({
-               error,
-               message
+               error: "WARNING",
+               message: error.message
             });
          };
 
       } else {
-         res.status(401).json({
-            error: "WARNING",
-            message: "User not authorized!"
-         });
+         console.log(userTeacherTrue, userStudentTrue, userAdminTrue)
+         console.log("error, don't know which one")
       };
    };
 };
@@ -327,9 +374,11 @@ function updateItem(db, tableNameParam) {
                const oldData = oldItemData[0];
                const newData = newItemData[0];
                const itemDataUpdated = dataUpdatesService.processDataUpdates(oldData, newData);
+
                const action = "update";
                const tableName = tableNameParam;
                const userLoggedInEmail = userLoggedIn.userEmail;
+
                await backlogDB.logChangesToBacklog(itemDataUpdated, id, action, tableName, userLoggedInEmail);
    
             } else {
@@ -341,8 +390,8 @@ function updateItem(db, tableNameParam) {
    
          } catch(error) {
             res.status(500).json({
-               error,
-               message
+               error: "WARNING",
+               message: error.message
             });
          };
 
@@ -420,8 +469,8 @@ function deleteItem(db, tableNameParam) {
 
          } catch(error) {
             res.status(500).json({
-               error,
-               message
+               error: "WARNING",
+               message: error.message
             });
          };
 

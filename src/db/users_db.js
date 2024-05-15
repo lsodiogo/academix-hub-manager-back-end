@@ -14,10 +14,7 @@ async function getTotalItems() {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: "Something went wrong while getting total of users!"
-      };
+      throw new Error("Something went wrong while getting total of users!");
    };
 };
 
@@ -38,10 +35,7 @@ async function getAllItems(limit, offset) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: "Something went wrong while searching all users!"
-      };
+      throw new Error("Something went wrong while searching all users!");
    };
 };
 
@@ -61,10 +55,7 @@ async function getItemById(id) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: `Something went wrong while searching user ${id}!`
-      };
+      throw new Error(`Something went wrong while searching user ${id}!`);
    };
 };
 
@@ -85,10 +76,7 @@ async function addItem(itemData) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: `Something went wrong while trying to insert user ${email}!`
-      };
+      throw new Error(`Something went wrong while trying to insert user ${email}!`);
    };
 };
 
@@ -111,10 +99,7 @@ async function updateItem(id, itemData) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: `Something went wrong while trying to update user ${id}!`
-      };
+      throw new Error(`Something went wrong while trying to update user ${id}!`);
    };
 };
 
@@ -133,10 +118,7 @@ async function deleteItem(id) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: `Something went wrong while trying to delete user ${id}!`
-      };
+      throw new Error(`Something went wrong while trying to delete user ${id}!`);
    };
 };
 
@@ -156,10 +138,47 @@ async function userLogin(email) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: `Something went wrong while trying to log in user ${email}!`
-      };
+      throw new Error(`Something went wrong while trying to log in user ${email}!`);
+   };
+};
+
+
+async function getTeacherByEmail(email) {
+   const params = [ email ];
+
+   try {
+      const sql = `
+         SELECT *
+         FROM teachers
+         WHERE email = ?
+      `;
+
+      const result = await connection.promise().query(sql, params);
+      return result[0];
+
+   } catch(error) {
+      console.log(error);
+      throw new Error(`Something went wrong while trying to log in user ${email}!`);
+   };
+};
+
+
+async function getStudentByEmail(email) {
+   const params = [ email ];
+
+   try {
+      const sql = `
+         SELECT *
+         FROM students
+         WHERE email = ?
+      `;
+
+      const result = await connection.promise().query(sql, params);
+      return result[0];
+
+   } catch(error) {
+      console.log(error);
+      throw new Error(`Something went wrong while trying to log in user ${email}!`);
    };
 };
 
@@ -171,5 +190,7 @@ module.exports = {
    addItem,
    updateItem,
    deleteItem,
-   userLogin
+   userLogin,
+   getTeacherByEmail,
+   getStudentByEmail
 };

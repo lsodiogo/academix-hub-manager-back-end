@@ -14,10 +14,7 @@ async function getTotalItems() {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: "Something went wrong while getting total of courses!"
-      };
+      throw new Error("Something went wrong while getting total of courses!");
    };
 };
 
@@ -38,10 +35,7 @@ async function getAllItems(limit, offset) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: "Something went wrong while searching all courses!"
-      };
+      throw new Error("Something went wrong while searching all courses!");
    };
 };
 
@@ -61,10 +55,7 @@ async function getItemById(id) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: `Something went wrong while searching course: ${id}!`
-      };
+      throw new Error(`Something went wrong while searching course: ${id}!`);
    };
 };
 
@@ -85,10 +76,7 @@ async function addItem(itemData) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: `Something went wrong while trying to insert course: ${name}!`
-      };
+      throw new Error(`Something went wrong while trying to insert course: ${name}!`);
    };
 };
 
@@ -116,10 +104,7 @@ async function updateItem(id, itemData) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: `Something went wrong while trying to update course: ${name}!`
-      };
+      throw new Error(`Something went wrong while trying to update course: ${name}!`);
    };
 };
 
@@ -138,10 +123,7 @@ async function deleteItem(id) {
 
    } catch(error) {
       console.log(error);
-      return {
-         error: "WARNING",
-         message: `Something went wrong while trying to delete course: ${id}!`
-      };
+      throw new Error(`Something went wrong while trying to delete course: ${id}!`);
    };
 };
 
