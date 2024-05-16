@@ -7,35 +7,35 @@ function processPaginationLinks(limit, offset, totalItems, tableNameParam) {
 
 
    let firstPage = null;
-   let prevPage = null;
+   let previousPage = null;
    let nextPage = null;
    let lastPage = null;
    
 
    // To build the first and previous page link
    if (previousOffset >= 0) {
-      firstPage = `http://localhost:3000/${tableNameParam}/?limit=${limit}&offset=${firstOffset}`;
-      prevPage = `http://localhost:3000/${tableNameParam}/?limit=${limit}&offset=${previousOffset}`;
+      firstPage = `${tableNameParam}/?limit=${limit}&offset=${firstOffset}`;
+      previousPage = `${tableNameParam}/?limit=${limit}&offset=${previousOffset}`;
    };
 
    // To make sure when the offset is changed in the URL, while clicking "previous" can go back to the very first result
    if (offset > 0 && offset < limit) {
-      firstPage = `http://localhost:3000/${tableNameParam}/?limit=${limit}&offset=${firstOffset}`;
-      prevPage = firstPage;
+      firstPage = `${tableNameParam}/?limit=${limit}&offset=${firstOffset}`;
+      previousPage = firstPage;
    };
    
 
    // To build the next and last page
    if (nextOffset < totalItems) {
-      nextPage = `http://localhost:3000/${tableNameParam}/?limit=${limit}&offset=${nextOffset}`;
-      lastPage = `http://localhost:3000/${tableNameParam}/?limit=${limit}&offset=${lastOffset}`;
+      nextPage = `${tableNameParam}/?limit=${limit}&offset=${nextOffset}`;
+      lastPage = `${tableNameParam}/?limit=${limit}&offset=${lastOffset}`;
    };
 
 
    return {
       firstPage: firstPage,
-      previous: prevPage,
-      next: nextPage,
+      previousPage: previousPage,
+      nextPage: nextPage,
       lastPage: lastPage
    };
 };

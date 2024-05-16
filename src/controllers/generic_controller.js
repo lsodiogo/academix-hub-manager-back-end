@@ -57,13 +57,13 @@ function getAllItems(db, tableNameParam) {
             if (allItems) {
 
                // To process pagination
-               const paginationLinks = paginationLinksService.processPaginationLinks(limit, offset, totalItems, tableNameParam);
+               const paginationLinksAccess = paginationLinksService.processPaginationLinks(limit, offset, totalItems, tableNameParam);
 
                // To show all data
                res.status(200).json(
                   {
                      totalItems: totalItems,
-                     ...paginationLinks,
+                     paginationLinksAccess,
                      results: allItems
                   }
                );
