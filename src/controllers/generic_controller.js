@@ -60,7 +60,7 @@ function getAllItems(db, tableNameParam) {
                const paginationLinks = paginationLinksService.processPaginationLinks(limit, offset, totalItems, tableNameParam);
 
                // To show all data
-               res.json(
+               res.status(200).json(
                   {
                      totalItems: totalItems,
                      ...paginationLinks,
@@ -148,7 +148,7 @@ function getItemById(db, tableNameParam) {
 
             //HERE   
             // To show data
-            res.json(item);
+            res.status(200).json(item);
 
             
             // To log into backlog if any search by id have been done
@@ -300,7 +300,7 @@ function addItem(db, tableNameParam) {
             // To show item data inserted in database
             const lastItemInserted = newItem.insertId;
             const item = await db.getItemById(lastItemInserted);
-            res.json(item[0]);
+            res.status(200).json(item[0]);
 
 
             // To log into backlog if any insert have been done
@@ -388,7 +388,7 @@ function updateItem(db, tableNameParam) {
             // To check if item exists
             if (item === 1) {
                const newItemData = await db.getItemById(id);
-               res.json(newItemData[0]);
+               res.status(200).json(newItemData[0]);
                
 
                // To log into backlog if any update have been done

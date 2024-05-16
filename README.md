@@ -101,10 +101,7 @@ Example POST body for login table:
 ### Response
 
 ```
-res.status(200).json({
-	error: "SUCCESS",
-	message: `User ${result.userEmail} already logged in!`
-});
+res.status(200).json(result);
 ```
 
 ---

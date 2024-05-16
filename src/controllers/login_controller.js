@@ -30,7 +30,7 @@ function loginUser(db, tableNameParam) {
 
                res.status(200).json({
                   error: "SUCCESS",
-                  message: "User logged in!"
+                  message: `User ${user.email} logged in!`
                });
 
                // To log into backlog if any user has logged in
@@ -68,10 +68,7 @@ function loginCheck(req, res)  {
    const result = cookieService.verifyCookie(req);
 
    if (result) {
-      res.status(200).json({
-         error: "SUCCESS",
-         message: `User ${result.userEmail} already logged in!`
-      });
+      res.status(200).json(result);
    } else {
       res.status(401).json({
          error: "WARNING",
