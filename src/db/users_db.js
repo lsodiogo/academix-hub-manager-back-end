@@ -2,13 +2,14 @@ const connection = require("./connection_db");
 
 
 async function getTotalItems() {
+   
+   const sql = `
+      SELECT COUNT(*)
+      AS total_items
+      FROM users
+   `;
+   
    try {
-      const sql = `
-         SELECT COUNT(*)
-         AS total_items
-         FROM users
-      `;
-
       const result = await connection.promise().query(sql);
       return result[0];
 
@@ -20,16 +21,17 @@ async function getTotalItems() {
 
 
 async function getAllItems(limit, offset) {
+   
    const params = [ limit, offset ];
+
+   const sql = `
+      SELECT id, email, category, created_At, updated_at
+      FROM users
+      LIMIT ?
+      OFFSET ?
+   `;
    
    try {
-      const sql = `
-         SELECT id, email, category, created_At, updated_at
-         FROM users
-         LIMIT ?
-         OFFSET ?
-      `;
-
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -41,15 +43,16 @@ async function getAllItems(limit, offset) {
 
 
 async function getItemById(id) {
+   
    const params = [ id ];
 
-   try {
-      const sql = `
-         SELECT id, email, category, created_At, updated_at
-         FROM users
-         WHERE id = ?
-      `;
+   const sql = `
+      SELECT id, email, category, created_At, updated_at
+      FROM users
+      WHERE id = ?
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -61,16 +64,17 @@ async function getItemById(id) {
 
 
 async function addItem(itemData) {
+   
    const { email, hashedPassword, category } = itemData;
    const params = [ email, hashedPassword, category ];
    
-   try {
-      const sql = `
-         INSERT INTO users
-         (email, hashed_password, category)
-         VALUES(?, ?, ?)
-      `;
+   const sql = `
+      INSERT INTO users
+      (email, hashed_password, category)
+      VALUES(?, ?, ?)
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -82,18 +86,17 @@ async function addItem(itemData) {
 
 
 async function updateItem(id, itemData) {
-   const { email, hashedPassword, category } = itemData;
-   const params = [ email, hashedPassword, category, id ];
    
-   try {
-      const sql = `
-         UPDATE users
-         SET email = ?,
-            hashed_password = ?,
-            category = ?
-         WHERE id = ?
-      `;
+   const { hashedPassword } = itemData;
+   const params = [ hashedPassword, id ];
+   
+   const sql = `
+      UPDATE users
+      SET hashed_password = ?
+      WHERE id = ?
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -105,14 +108,15 @@ async function updateItem(id, itemData) {
 
 
 async function deleteItem(id) {
+   
    const params = [ id ];
 
+   const sql = `
+      DELETE FROM users
+      WHERE id = ?
+   `;
+
    try {
-      const sql = `
-         DELETE FROM users
-         WHERE id = ?
-      `;
-      
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -124,15 +128,16 @@ async function deleteItem(id) {
 
 
 async function userLogin(email) {
+   
    const params = [ email ];
 
-   try {
-      const sql = `
-         SELECT *
-         FROM users
-         WHERE email = ?
-      `;
+   const sql = `
+      SELECT *
+      FROM users
+      WHERE email = ?
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -144,15 +149,16 @@ async function userLogin(email) {
 
 
 async function getTeacherByEmail(email) {
+   
    const params = [ email ];
 
-   try {
-      const sql = `
-         SELECT *
-         FROM teachers
-         WHERE email = ?
-      `;
+   const sql = `
+      SELECT *
+      FROM teachers
+      WHERE email = ?
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -164,15 +170,16 @@ async function getTeacherByEmail(email) {
 
 
 async function getStudentByEmail(email) {
+   
    const params = [ email ];
 
-   try {
-      const sql = `
-         SELECT *
-         FROM students
-         WHERE email = ?
-      `;
+   const sql = `
+      SELECT *
+      FROM students
+      WHERE email = ?
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 

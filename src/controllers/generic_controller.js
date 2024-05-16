@@ -28,22 +28,21 @@ function getAllItems(db, tableNameParam) {
 
       
       // To check if user logged in is:
-         // Admins (full access)
-         // Teacher (full access, except users table and backlog table)
-         // Student (full access, except users table and backlog table)
+         // Admins: full access
+         // Teachers: full access, except users table and backlog table
+         // Students: full access, except users table and backlog table
       if (
             (userLoggedIn.userCategory === "admin" ||
                ((userLoggedIn.userCategory === "teacher" || userLoggedIn.userCategory === "student") && (tableNameParam != "users" && tableNameParam != "backlog"))
             )
          ) {
 
+         // To start building pagination
+         let { limit, offset } = req.query;
+         limit = limit && !isNaN(parseInt(limit)) ? parseInt(limit) : 5;
+         offset = offset && !isNaN(parseInt(offset)) ? parseInt(offset) : 0;
+
          try {
-
-            // To start building pagination
-            let { limit, offset } = req.query;
-            limit = limit && !isNaN(parseInt(limit)) ? parseInt(limit) : 5;
-            offset = offset && !isNaN(parseInt(offset)) ? parseInt(offset) : 0;
-
 
             // To get total amount of items
             const getTotalItems = await db.getTotalItems();
@@ -113,59 +112,65 @@ function getItemById(db, tableNameParam) {
          return;
       };
 
+      
+      try {
 
-      // To get result of item by id
-      const itemById = await db.getItemById(id);
+         // To get result of item by id
+         const itemById = await db.getItemById(id);
+         const item = itemById[0];
 
 
-      // To check if user logged in is:
-         // Admins (full access)
-         // Teacher (limited access, no access to users table, except user self-search)
-         // Student (limited access, no access to users table, except user self-search, and no access to teachers table and when students table only with self-search)
-      if ((userLoggedIn.userCategory === "admin") ||
-            ((tableNameParam === "users" && id == userLoggedIn.userId) ||
-               (userLoggedIn.userCategory === "teacher" && tableNameParam != "users") ||
-               (userLoggedIn.userCategory === "student" &&
-                  ((tableNameParam != "users" && tableNameParam != "teachers") ||
-                  (tableNameParam === "students" && userLoggedIn.userEmail === itemById[0].email))
-               )
-            )
-         ) {
-
-         try {
-            
-            const item = itemById[0];
-
-            // To check if item exists
-            if (item) {
-               
-               // To show data
-               res.json(item);
-
-               
-               // To log into backlog if any search by id have been done
-               const action = "search";
-               const tableName = tableNameParam;
-               const userLoggedInEmail = userLoggedIn.userEmail;
-               await backlogDB.logChangesToBacklog(item, item.id, action, tableName, userLoggedInEmail);
-
-            } else {
-               res.status(404).json({
-                  error: "WARNING",
-                  message: "Item not found!"
-               });
-            };
-
-         } catch(error) {
-            res.status(500).json({
+         // To check if item exists
+         if (!item) {
+            res.status(404).json({
                error: "WARNING",
-               message: error.message
+               message: "Item not found!"
+            });
+
+            return;
+         };
+
+
+         // To check if user logged in is:
+            // Admins: full access
+            // Teachers: limited access, no access to users table, except user self-search
+            // Students: limited access, no access to users table, except user self-search, and no access to teachers table and when students table only with self-search
+         if ((userLoggedIn.userCategory === "admin") ||
+               ((tableNameParam === "users" && id == userLoggedIn.userId) ||
+                  (userLoggedIn.userCategory === "teacher" && tableNameParam != "users") ||
+                  (userLoggedIn.userCategory === "student" &&
+                     ((tableNameParam === "students" && userLoggedIn.userEmail === itemById[0].email) ||
+                     (tableNameParam != "students" && tableNameParam != "users" && tableNameParam != "teachers"))
+                  )
+               )
+            ) {
+               
+
+            //HERE   
+            // To show data
+            res.json(item);
+
+            
+            // To log into backlog if any search by id have been done
+            const action = "search";
+            const tableName = tableNameParam;
+            const userLoggedInEmail = userLoggedIn.userEmail;
+            await backlogDB.logChangesToBacklog(item, item.id, action, tableName, userLoggedInEmail);
+            //HERE
+
+               
+
+         } else {
+            res.status(401).json({
+               error: "WARNING",
+               message: "User not authorized!"
             });
          };
-      } else {
-         res.status(401).json({
+
+      } catch(error) {
+         res.status(500).json({
             error: "WARNING",
-            message: "User not authorized!"
+            message: error.message
          });
       };
    };
@@ -189,8 +194,12 @@ function addItem(db, tableNameParam) {
          });
 
          return;
+      };
 
-      } else if (userLoggedIn.userCategory != "admin") {
+
+      // To check if user logged in is:
+         // Admins: only admins have permission to delete data
+      if (userLoggedIn.userCategory != "admin") {
          res.status(401).json({
             error: "WARNING",
             message: "User not authorized!"
@@ -199,79 +208,90 @@ function addItem(db, tableNameParam) {
          return;
       };
 
-
-
-
-
-
-
+      
+      // To check when inserting new users with category teachers or students, if email is already entered at table of teachers or students
       let userTeacherTrue = false;
       let userStudentTrue = false;
       let userAdminTrue = false;
 
       if (tableNameParam === "users" && req.body.category === "teacher") {
-         const teacherByEmail = await db.getTeacherByEmail(req.body.email);
+         
+         try {
+            const teacherByEmail = await db.getTeacherByEmail(req.body.email);
 
-         if (!teacherByEmail[0]) {
-            res.status(404).json({
+            if (!teacherByEmail[0]) {
+               res.status(404).json({
+                  error: "WARNING",
+                  message: "User not found!"
+               });
+
+               return;
+
+            } else {
+               userTeacherTrue = true;
+            };
+
+         } catch(error) {
+            res.status(500).json({
                error: "WARNING",
-               message: "User not found!"
+               message: error.message
             });
-            console.log("user email e teacher email diferentes, bye")
-            return;
-         } else {
-            console.log("user email e teacher email iguais")
-            userTeacherTrue = true;
-         }
-      }
+         };
+      };
 
       if (tableNameParam === "users" && req.body.category === "student") {
-         const studentByEmail = await db.getStudentByEmail(req.body.email);
+         
+         try {
+            const studentByEmail = await db.getStudentByEmail(req.body.email);
 
-         if (!studentByEmail[0]) {
-            res.status(404).json({
+            if (!studentByEmail[0]) {
+               res.status(404).json({
+                  error: "WARNING",
+                  message: "User not found!"
+               });
+
+               return;
+
+            } else {
+               userStudentTrue = true;
+            };
+
+         } catch(error) {
+            res.status(500).json({
                error: "WARNING",
-               message: "User not found!"
+               message: error.message
             });
-            console.log("user email e student email sao diferentes, bye")
-            return;
-         } else {
-            console.log("user email e student email sao iguais")
-            userStudentTrue = true;
-         }
-      }
+         };
+      };
 
       if (tableNameParam === "users" && req.body.category === "admin") {
          userAdminTrue = true;
-      }
-
-
+      };
 
 
       // To check if user logged in is:
-         // Admins: only admins have permission to insert data and when a new user with category of teacher or student, email must be already entered at database of teachers or students
-      if (tableNameParam != "users" || tableNameParam === "users" && (userAdminTrue || userTeacherTrue || userStudentTrue)) {
+         // Admins: only admins have permission to insert data and when a new user with category of teacher or student, email must be already entered at table of teachers or students
+      if (tableNameParam != "users" || (tableNameParam === "users" && (userAdminTrue || userTeacherTrue || userStudentTrue))) {
          
-         try {
-
-            const bodyData = req.body;
-            let itemData;
+         const bodyData = req.body;
+         let itemData;
 
 
-            // To validate if any data is empty
-            await validateDataService.sanitiseBlankSpaces(bodyData);
+         // To validate if any data is empty
+         await validateDataService.sanitiseBlankSpaces(bodyData);
 
 
-            // To validate if the data is about a user and if so to encrypt the password 
-            if (tableNameParam === "users") {
-               const { email, password, category } = bodyData;
-               const hashedPassword = await encryptionService.createHash(password);
-               itemData = { email, hashedPassword, category };
+         // To validate if the data is about a user and if so to encrypt the password 
+         if (tableNameParam === "users") {
+            const { email, password, category } = bodyData;
+            const hashedPassword = await encryptionService.createHash(password);
+            itemData = { email, hashedPassword, category };
 
-            } else {
-               itemData = bodyData;
-            };
-         
+         } else {
+            itemData = bodyData;
+         };
+
+         try {         
 
             // To insert item in database
             const newItem = await db.addItem(itemData);
@@ -298,8 +318,10 @@ function addItem(db, tableNameParam) {
          };
 
       } else {
-         console.log(userTeacherTrue, userStudentTrue, userAdminTrue)
-         console.log("error, don't know which one")
+         res.status(404).json({
+            error: "WARNING",
+            message: "User not found!"
+         });
       };
    };
 };
@@ -309,8 +331,6 @@ function addItem(db, tableNameParam) {
 function updateItem(db, tableNameParam) {
    
    return async function(req, res) {
-
-      const { id } = req.params;
 
       // To get cookies
       const userLoggedIn = cookieService.verifyCookie(req);
@@ -327,38 +347,39 @@ function updateItem(db, tableNameParam) {
       };
 
 
+      const { id } = req.params;
+      const bodyData = req.body;
+      let itemData;
+
+
+      // To validate if any data is empty
+      await validateDataService.sanitiseBlankSpaces(bodyData);
+
+
+      // To validate if the data is about a user and if so to encrypt the password 
+      if (tableNameParam === "users") {
+         const { email, password, category } = bodyData;
+         const hashedPassword = await encryptionService.createHash(password);
+         itemData = { email, hashedPassword, category };
+
+      } else {
+         itemData = bodyData;
+      };
+
+
       // To check if user logged in is:
-         // Admins: only admins have permission to update data, except for users updates, which must be done only by the user themselves 
+         // Admins: only admins have permission to update data, except for users table updates, which must be done only by the user themselves and only possible to update password
       if ((userLoggedIn.userCategory === "admin" && tableNameParam != "users") || (tableNameParam === "users" && id == userLoggedIn.userId)) {
       
          try {
 
-            const bodyData = req.body;
-            let itemData;
-
-
-            // To validate if any data is empty
-            await validateDataService.sanitiseBlankSpaces(bodyData);
-
-
-            // To validate if the data is about a user and if so to encrypt the password 
-            if (tableNameParam === "users") {
-               const { email, password, category } = bodyData;
-               const hashedPassword = await encryptionService.createHash(password);
-               itemData = { email, hashedPassword, category };
-
-            } else {
-               itemData = bodyData;
-            };
-
-
             // To get old data
             const oldItemData = await db.getItemById(id);
-            
+
 
             //To get new data updated
             const itemUpdated = await db.updateItem(id, itemData);
-   
+ 
 
             // To show item data updated in database
             const item = itemUpdated.affectedRows;
@@ -410,8 +431,6 @@ function deleteItem(db, tableNameParam) {
    
    return async function(req, res) {
 
-      const { id } = req.params;
-
       // To get cookies
       const userLoggedIn = cookieService.verifyCookie(req);
 
@@ -425,59 +444,63 @@ function deleteItem(db, tableNameParam) {
 
          return;
       };
-
+      
 
       // To check if user logged in is:
-         // Admins: only admins have permission to delete data, except for users deletes, which must be done only by the user themselves
-      if ((userLoggedIn.userCategory === "admin" && tableNameParam != "users") || (tableNameParam === "users" && id == userLoggedIn.userId)) {
-   
-         try {
-
-            // To get data
-            const oldItemData = await db.getItemById(id);
-
-
-            //To delete item
-            const itemDeleted = await db.deleteItem(id);
-            
-
-            // To show item data deleted from database
-            const item = itemDeleted.affectedRows;
-
-
-            // To check if item exists
-            if (item === 1) {
-               await db.getItemById(id);
-               res.status(200).json({
-                  error: "SUCCESS",
-                  message: "Item deleted!"
-               });
-
-               // To log into backlog if any delete have been done
-               const oldData = oldItemData[0];
-               const action = "delete";
-               const tableName = tableNameParam;
-               const userLoggedInEmail = userLoggedIn.userEmail;
-               await backlogDB.logChangesToBacklog(oldData, id, action, tableName, userLoggedInEmail);
-
-            } else {
-               res.status(404).json({
-                  error: "WARNING",
-                  message: "Item not found!"
-               });
-            }; 
-
-         } catch(error) {
-            res.status(500).json({
-               error: "WARNING",
-               message: error.message
-            });
-         };
-
-      } else {
+         // Admins: only admins have permission to delete data
+      if (userLoggedIn.userCategory != "admin") {
          res.status(401).json({
             error: "WARNING",
             message: "User not authorized!"
+         });
+
+         return;
+      };
+
+
+      const { id } = req.params;
+
+
+      try {
+
+         // To get data
+         const oldItemData = await db.getItemById(id);
+
+
+         //To delete item
+         const itemDeleted = await db.deleteItem(id);
+         
+
+         // To show item data deleted from database
+         const item = itemDeleted.affectedRows;
+
+
+         // To check if item exists
+         if (item === 1) {
+            await db.getItemById(id);
+            res.status(200).json({
+               error: "SUCCESS",
+               message: "Item deleted!"
+            });
+
+            // To log into backlog if any delete have been done
+            const oldData = oldItemData[0];
+            const action = "delete";
+            const tableName = tableNameParam;
+            const userLoggedInEmail = userLoggedIn.userEmail;
+            await backlogDB.logChangesToBacklog(oldData, id, action, tableName, userLoggedInEmail);
+
+         } else {
+            res.status(404).json({
+               error: "WARNING",
+               message: "Item not found!"
+            });
+         }; 
+
+      } catch(error) {
+         res.status(500).json({
+            error: "WARNING",
+            message: error.message
          });
       };
    };

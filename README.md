@@ -137,8 +137,8 @@ res.status(200).json({
 | USER CATEGORY | ACCESS | 
 | ------------- | ------ |
 | Admins | Full access |
-| Teacher | Full access, except users table |
-| Student | Full access, except users table |
+| Teachers | Full access, except users table and backlog table |
+| Students | Full access, except users table and backlog table |
 
 ### Response
 
@@ -200,8 +200,8 @@ Example response for users table:
 | USER CATEGORY | ACCESS | 
 | ------------- | ------ |
 | Admins | Full access |
-| Teacher | Limited access, no access to users table |
-| Student | Limited access, no access to users table and teachers table and when students table only with self-search |
+| Teachers | Limited access, no access to users table, except user self-search |
+| Students | Limited access, no access to users table, except user self-search, and no access to teachers table and when students table only with self-search |
 
 ### Response
 
@@ -234,7 +234,7 @@ Example response for courses table:
 
 | USER CATEGORY | ACCESS | 
 | ------------- | ------ |
-| Admins | Only admins have permission to insert data, except if a user is trying to create an account, which they don't need to be logged in |
+| Admins | Only admins have permission to insert data and when a new user with category of teacher or student, email must be already entered at table of teachers or students |
 
 ### Body
 
@@ -259,7 +259,7 @@ Example POST body for users table:
 
 | USER CATEGORY | ACCESS | 
 | ------------- | ------ |
-| Admins | Only admins have permission to update data, except for users updates, which must be done only by the user themselves |
+| Admins | Only admins have permission to update data, except for users table updates, which must be done only by the user themselves and only possible to update password |
 
 ### Body
 
@@ -289,7 +289,7 @@ Example POST body for teachers table:
 
 | USER CATEGORY | ACCESS | 
 | ------------- | ------ |
-| Admins | Only admins have permission to delete data, except for users deletes, which must be done only by the user themselves |
+| Admins | Only admins have permission to delete data |
 
 ---
 ---

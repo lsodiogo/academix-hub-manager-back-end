@@ -2,13 +2,14 @@ const connection = require("./connection_db");
 
 
 async function getTotalItems() {
+   
+   const sql = `
+      SELECT COUNT(*)
+      AS total_items
+      FROM school
+   `;
+   
    try {
-      const sql = `
-         SELECT COUNT(*)
-         AS total_items
-         FROM school
-      `;
-
       const result = await connection.promise().query(sql);
       return result[0];
 
@@ -20,16 +21,17 @@ async function getTotalItems() {
 
 
 async function getAllItems(limit, offset) {
+   
    const params = [ limit, offset ];
    
-   try {
-      const sql = `
-         SELECT *
-         FROM school
-         LIMIT ?
-         OFFSET ?
-      `;
+   const sql = `
+      SELECT *
+      FROM school
+      LIMIT ?
+      OFFSET ?
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -41,15 +43,16 @@ async function getAllItems(limit, offset) {
 
 
 async function getItemById(id) {
+   
    const params = [ id ];
 
-   try {
-      const sql = `
-         SELECT *
-         FROM school
-         WHERE id = ?
-      `;
+   const sql = `
+      SELECT *
+      FROM school
+      WHERE id = ?
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -61,16 +64,17 @@ async function getItemById(id) {
 
 
 async function addItem(itemData) {
+   
    const { name, abbreviation } = itemData;
    const params = [ name, abbreviation ];
    
-   try {
-      const sql = `
-         INSERT INTO school
-         (name, abbreviation)
-         VALUES(?, ?)
-      `;
+   const sql = `
+      INSERT INTO school
+      (name, abbreviation)
+      VALUES(?, ?)
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -82,17 +86,18 @@ async function addItem(itemData) {
 
 
 async function updateItem(id, itemData) {
+   
    const { name, abbreviation} = itemData;
    const params = [ name, abbreviation, id ];
    
-   try {
-      const sql = `
-         UPDATE school
-         SET name = ?,
-            abbreviation = ?
-         WHERE id = ?
-      `;
+   const sql = `
+      UPDATE school
+      SET name = ?,
+         abbreviation = ?
+      WHERE id = ?
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -104,14 +109,15 @@ async function updateItem(id, itemData) {
 
 
 async function deleteItem(id) {
+   
    const params = [ id ];
 
-   try {
-      const sql = `
-         DELETE FROM school
-         WHERE id = ?
-      `;
-      
+   const sql = `
+      DELETE FROM school
+      WHERE id = ?
+   `;
+
+   try {   
       const result = await connection.promise().query(sql, params);
       return result[0];
 

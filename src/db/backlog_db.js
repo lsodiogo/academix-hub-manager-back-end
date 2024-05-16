@@ -2,13 +2,14 @@ const connection = require("./connection_db");
 
 
 async function getTotalItems() {
+   
+   const sql = `
+      SELECT COUNT(*)
+      AS total_items
+      FROM backlog
+   `;
+   
    try {
-      const sql = `
-         SELECT COUNT(*)
-         AS total_items
-         FROM backlog
-      `;
-
       const result = await connection.promise().query(sql);
       return result[0];
 
@@ -20,17 +21,18 @@ async function getTotalItems() {
 
 
 async function getAllItems(limit, offset) {
+   
    const params = [ limit, offset ];
    
-   try {
-      const sql = `
-         SELECT *
-         FROM backlog
-         ORDER BY created_at DESC
-         LIMIT ?
-         OFFSET ?
-      `;
+   const sql = `
+      SELECT *
+      FROM backlog
+      ORDER BY created_at DESC
+      LIMIT ?
+      OFFSET ?
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -48,14 +50,14 @@ async function logChangesToBacklog(itemData, item_id, action, tableName, userLog
 
       const itemDataString = JSON.stringify(itemData);
       const params = [ action, tableName, item_id, itemDataString, userLoggedInEmail ];
+
+      const sql = `
+         INSERT INTO backlog
+         (action, table_name, row_id, action_description, user_email)
+         VALUES(?, ?, ?, ?, ?)
+      `;
       
       try {
-         const sql = `
-            INSERT INTO backlog
-            (action, table_name, row_id, action_description, user_email)
-            VALUES(?, ?, ?, ?, ?)
-         `;
-
          const result = await connection.promise().query(sql, params);
          return result[0];
 

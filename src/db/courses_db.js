@@ -2,13 +2,14 @@ const connection = require("./connection_db");
 
 
 async function getTotalItems() {
+   
+   const sql = `
+      SELECT COUNT(*)
+      AS total_items
+      FROM courses
+   `;
+   
    try {
-      const sql = `
-         SELECT COUNT(*)
-         AS total_items
-         FROM courses
-      `;
-
       const result = await connection.promise().query(sql);
       return result[0];
 
@@ -20,16 +21,17 @@ async function getTotalItems() {
 
 
 async function getAllItems(limit, offset) {
+   
    const params = [ limit, offset ];
    
-   try {
-      const sql = `
-         SELECT *
-         FROM courses
-         LIMIT ?
-         OFFSET ?
-      `;
+   const sql = `
+      SELECT *
+      FROM courses
+      LIMIT ?
+      OFFSET ?
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -41,15 +43,16 @@ async function getAllItems(limit, offset) {
 
 
 async function getItemById(id) {
+   
    const params = [ id ];
 
-   try {
-      const sql = `
-         SELECT *
-         FROM courses
-         WHERE id = ?
-      `;
+   const sql = `
+      SELECT *
+      FROM courses
+      WHERE id = ?
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -61,16 +64,17 @@ async function getItemById(id) {
 
 
 async function addItem(itemData) {
+   
    const { name, edition, duration, begin, end, description, teacher, status } = itemData;
    const params = [ name, edition, duration, begin, end, description, teacher, status ];
    
-   try {
-      const sql = `
-         INSERT INTO courses
-         (name, edition_number, hours_duration, begin_date, end_date, description, teacher_id, status_id)
-         VALUES(?, ?, ?, ?, ?, ?, ?, ?)
-      `;
+   const sql = `
+      INSERT INTO courses
+      (name, edition_number, hours_duration, begin_date, end_date, description, teacher_id, status_id)
+      VALUES(?, ?, ?, ?, ?, ?, ?, ?)
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -82,23 +86,24 @@ async function addItem(itemData) {
 
 
 async function updateItem(id, itemData) {
+   
    const { name, edition, duration, begin, end, description, teacher, status } = itemData;
    const params = [ name, edition, duration, begin, end, description, teacher, status, id ];
 
-   try {
-      const sql = `
-         UPDATE courses
-         SET name = ?,
-            edition_number = ?,
-            hours_duration = ?,
-            begin_date = ?,
-            end_date = ?,
-            description = ?,
-            teacher_id = ?,
-            status_id = ?
-         WHERE id = ?
-      `;
+   const sql = `
+      UPDATE courses
+      SET name = ?,
+         edition_number = ?,
+         hours_duration = ?,
+         begin_date = ?,
+         end_date = ?,
+         description = ?,
+         teacher_id = ?,
+         status_id = ?
+      WHERE id = ?
+   `;
 
+   try {
       const result = await connection.promise().query(sql, params);
       return result[0];
 
@@ -110,14 +115,15 @@ async function updateItem(id, itemData) {
 
 
 async function deleteItem(id) {
+   
    const params = [ id ];
 
+   const sql = `
+      DELETE FROM courses
+      WHERE id = ?
+   `;
+
    try {
-      const sql = `
-         DELETE FROM courses
-         WHERE id = ?
-      `;
-      
       const result = await connection.promise().query(sql, params);
       return result[0];
 
