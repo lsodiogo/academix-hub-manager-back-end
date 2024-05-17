@@ -33,10 +33,12 @@ function processPaginationLinks(limit, offset, totalItems, tableNameParam) {
 
 
    return {
-      firstPage: firstPage,
-      previousPage: previousPage,
-      nextPage: nextPage,
-      lastPage: lastPage
+      firstPage,
+      previousPage,
+      nextPage,
+      lastPage,
+      limit,
+      offset
    };
 };
 

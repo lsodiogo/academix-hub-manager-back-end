@@ -25,7 +25,7 @@ async function getAllItems(limit, offset) {
    const params = [ limit, offset ];
 
    const sql = `
-      SELECT id, email, category, created_At, updated_at
+      SELECT id, email, category, created_at, updated_at
       FROM users
       LIMIT ?
       OFFSET ?
@@ -47,7 +47,7 @@ async function getItemById(id) {
    const params = [ id ];
 
    const sql = `
-      SELECT id, email, category, created_At, updated_at
+      SELECT id, email, category, created_at, updated_at
       FROM users
       WHERE id = ?
    `;

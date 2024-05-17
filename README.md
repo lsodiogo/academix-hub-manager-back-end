@@ -33,8 +33,8 @@
 | school | name → unique
 | | name + abbreviation → unique |
 | status | name → unique |
-| students | names + surnames → unique | course_id, status_id |
-| teachers | names + surnames → unique | status_id
+| students | name + surname → unique | course_id, status_id |
+| teachers | name + surname → unique | status_id
 | users | email → unique |
 
 ---
@@ -157,28 +157,28 @@ Example response for users table:
 			"id": 68,
 			"email": "admin",
 			"category": "admin",
-			"created_At": "2024-05-09T17:16:29.000Z",
+			"created_at": "2024-05-09T17:16:29.000Z",
 			"updated_at": "2024-05-10T15:40:24.000Z"
 		},
 		{
 			"id": 69,
 			"email": "student",
 			"category": "student",
-			"created_At": "2024-05-09T17:16:40.000Z",
+			"created_at": "2024-05-09T17:16:40.000Z",
 			"updated_at": "2024-05-09T17:16:40.000Z"
 		},
 		{
 			"id": 70,
 			"email": "teacher",
 			"category": "teacher",
-			"created_At": "2024-05-09T17:16:51.000Z",
+			"created_at": "2024-05-09T17:16:51.000Z",
 			"updated_at": "2024-05-09T17:16:51.000Z"
 		},
 		{
 			"id": 95,
 			"email": "dante5085@google.couk",
 			"category": "student",
-			"created_At": "2024-05-10T16:15:46.000Z",
+			"created_at": "2024-05-10T16:15:46.000Z",
 			"updated_at": "2024-05-10T16:15:46.000Z"
 		}
 	]
@@ -264,8 +264,8 @@ Example POST body for teachers table:
 
 ```
 {
-	"names": "Joelle",
-	"surnames": "Cummings",
+	"name": "Joelle",
+	"surname": "Cummings",
 	"birthdate": "1982-03-16T23:00:00.000Z",
 	"email": "joelle@yahoo.com",
 	"telef": "1-892-827-4039",

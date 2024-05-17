@@ -25,8 +25,13 @@ async function getAllItems(limit, offset) {
    const params = [ limit, offset ];
    
    const sql = `
-      SELECT *
+      SELECT courses.*,
+         CONCAT(teachers.name, ' ', teachers.surname) AS teacher_name,
+         status.name AS status_name
       FROM courses
+      JOIN teachers ON courses.teacher_id = teachers.id
+      JOIN status ON courses.status_id = status.id
+      ORDER BY courses.name ASC
       LIMIT ?
       OFFSET ?
    `;
@@ -47,9 +52,13 @@ async function getItemById(id) {
    const params = [ id ];
 
    const sql = `
-      SELECT *
+      SELECT courses.*,
+         CONCAT(teachers.name, ' ', teachers.surname) AS teacher_name,
+         status.name AS status_name
       FROM courses
-      WHERE id = ?
+      JOIN teachers ON courses.teacher_id = teachers.id
+      JOIN status ON courses.status_id = status.id
+      WHERE courses.id = ?
    `;
 
    try {

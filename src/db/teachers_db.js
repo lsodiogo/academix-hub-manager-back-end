@@ -65,12 +65,12 @@ async function getItemById(id) {
 
 async function addItem(itemData) {
    
-   const { names, surnames, birthdate, email, telef, address, started, status } = itemData;
-   const params = [ names, surnames, birthdate, email, telef, address, started, status ];
+   const { name, surname, birthdate, email, telef, address, started, status } = itemData;
+   const params = [ name, surname, birthdate, email, telef, address, started, status ];
    
    const sql = `
       INSERT INTO teachers
-      (names, surnames, birthdate, email, telef, address, started_at, status_id)
+      (name, surname, birthdate, email, telef, address, started_at, status_id)
       VALUES(?, ?, ?, ?, ?, ?, ?, ?)
    `;
 
@@ -87,13 +87,13 @@ async function addItem(itemData) {
 
 async function updateItem(id, itemData) {
    
-   const { names, surnames, birthdate, email, telef, address, started, status } = itemData;
-   const params = [ names, surnames, birthdate, email, telef, address, started, status, id ];
+   const { name, surname, birthdate, email, telef, address, started, status } = itemData;
+   const params = [ name, surname, birthdate, email, telef, address, started, status, id ];
    
    const sql = `
       UPDATE teachers
-      SET names = ?,
-         surnames = ?,
+      SET name = ?,
+         surname = ?,
          birthdate = ?,
          email = ?,
          telef = ?,

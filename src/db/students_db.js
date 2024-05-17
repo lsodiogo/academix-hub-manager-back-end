@@ -25,8 +25,13 @@ async function getAllItems(limit, offset) {
    const params = [ limit, offset ];
    
    const sql = `
-      SELECT *
+      SELECT students.*,
+         courses.name AS course_name,
+         status.name AS status_name
       FROM students
+      JOIN courses ON students.course_id = courses.id
+      JOIN status ON students.status_id = status.id
+      ORDER BY students.name ASC
       LIMIT ?
       OFFSET ?
    `;
@@ -47,9 +52,13 @@ async function getItemById(id) {
    const params = [ id ];
 
    const sql = `
-      SELECT *
+      SELECT students.*,
+         courses.name AS course_name,
+         status.name AS status_name
       FROM students
-      WHERE id = ?
+      JOIN courses ON students.course_id = courses.id
+      JOIN status ON students.status_id = status.id
+      WHERE students.id = ?
    `;
 
    try {
@@ -65,12 +74,12 @@ async function getItemById(id) {
 
 async function addItem(itemData) {
    
-   const { names, surnames, birthdate, email, telef, address, enrolled, course, grade, graduated, status } = itemData;
-   const params = [ names, surnames, birthdate, email, telef, address, enrolled, course, grade, graduated, status ];
+   const { name, surname, birthdate, email, telef, address, enrolled, course, grade, graduated, status } = itemData;
+   const params = [ name, surname, birthdate, email, telef, address, enrolled, course, grade, graduated, status ];
    
    const sql = `
       INSERT INTO students
-      (names, surnames, birthdate, email, telef, address, enrolled, course, grade, graduated, status)
+      (name, surname, birthdate, email, telef, address, enrolled, course, grade, graduated, status)
       VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
    `;
 
@@ -87,13 +96,13 @@ async function addItem(itemData) {
 
 async function updateItem(id, itemData) {
    
-   const { names, surnames, birthdate, email, telef, address, enrolled, course, grade, graduated, status } = itemData;
-   const params = [ names, surnames, birthdate, email, telef, address, enrolled, course, grade, graduated, status, id ];
+   const { name, surname, birthdate, email, telef, address, enrolled, course, grade, graduated, status } = itemData;
+   const params = [ name, surname, birthdate, email, telef, address, enrolled, course, grade, graduated, status, id ];
    
    const sql = `
       UPDATE students
-      SET names = ?,
-         surnames = ?,
+      SET name = ?,
+         surname = ?,
          birthdate = ?,
          email = ?,
          telef = ?,
