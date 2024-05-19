@@ -1,4 +1,4 @@
-function setCookie(res, cookieData) {
+function setCookie(res, cookieData, rememberMe) {
    
    // Data to be added to cookie
    const jsonCookieData = JSON.stringify(cookieData);
@@ -8,7 +8,7 @@ function setCookie(res, cookieData) {
       sameSite: "none",
       secure: true,
       signed: true,
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000) //1day
+      expires: rememberMe ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null // 1 day of validation
    });
 };
 

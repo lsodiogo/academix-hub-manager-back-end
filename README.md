@@ -85,7 +85,8 @@ Example POST body for login table:
 ```
 {
 	"email": "example@example.com",
-	"password": "example"
+	"password": "example",
+	"rememberMe": true or false
 }
 ```
 

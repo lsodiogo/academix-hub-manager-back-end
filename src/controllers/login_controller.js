@@ -9,7 +9,7 @@ function loginUser(db, tableNameParam) {
 
       try {
 
-         const { email, password } = req.body;
+         const { email, password, rememberMe } = req.body;
          
          const item = await db.userLogin(email);
          const user = item[0];
@@ -26,7 +26,7 @@ function loginUser(db, tableNameParam) {
                   userCategory: user.category
                };
                
-               cookieService.setCookie(res, cookieData);
+               cookieService.setCookie(res, cookieData, rememberMe);
 
                res.status(200).json({
                   error: "SUCCESS",

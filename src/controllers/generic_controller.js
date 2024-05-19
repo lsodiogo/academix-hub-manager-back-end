@@ -33,7 +33,7 @@ function getAllItems(db, tableNameParam) {
          // Students: full access, except users table and backlog table
       if (
             (userLoggedIn.userCategory === "admin" ||
-               ((userLoggedIn.userCategory === "teacher" || userLoggedIn.userCategory === "student") && (tableNameParam != "users" && tableNameParam != "backlog"))
+               ((userLoggedIn.userCategory === "teacher" || userLoggedIn.userCategory === "student") && (tableNameParam !== "users" && tableNameParam !== "backlog"))
             )
          ) {
 
@@ -137,10 +137,10 @@ function getItemById(db, tableNameParam) {
             // Students: limited access, no access to users table, except user self-search, and no access to teachers table and when students table only with self-search
          if ((userLoggedIn.userCategory === "admin") ||
                ((tableNameParam === "users" && id == userLoggedIn.userId) ||
-                  (userLoggedIn.userCategory === "teacher" && tableNameParam != "users") ||
+                  (userLoggedIn.userCategory === "teacher" && tableNameParam !== "users") ||
                   (userLoggedIn.userCategory === "student" &&
                      ((tableNameParam === "students" && userLoggedIn.userEmail === itemById[0].email) ||
-                     (tableNameParam != "students" && tableNameParam != "users" && tableNameParam != "teachers"))
+                     (tableNameParam !== "students" && tableNameParam !== "users" && tableNameParam !== "teachers"))
                   )
                )
             ) {
@@ -199,7 +199,7 @@ function addItem(db, tableNameParam) {
 
       // To check if user logged in is:
          // Admins: only admins have permission to delete data
-      if (userLoggedIn.userCategory != "admin") {
+      if (userLoggedIn.userCategory !== "admin") {
          res.status(401).json({
             error: "WARNING",
             message: "User not authorized!"
@@ -271,7 +271,7 @@ function addItem(db, tableNameParam) {
 
       // To check if user logged in is:
          // Admins: only admins have permission to insert data and when a new user with category of teacher or student, email must be already entered at table of teachers or students
-      if (tableNameParam != "users" || (tableNameParam === "users" && (userAdminTrue || userTeacherTrue || userStudentTrue))) {
+      if (tableNameParam !== "users" || (tableNameParam === "users" && (userAdminTrue || userTeacherTrue || userStudentTrue))) {
          
          const bodyData = req.body;
          let itemData;
@@ -369,7 +369,7 @@ function updateItem(db, tableNameParam) {
 
       // To check if user logged in is:
          // Admins: only admins have permission to update data, except for users table updates, which must be done only by the user themselves and only possible to update password
-      if ((userLoggedIn.userCategory === "admin" && tableNameParam != "users") || (tableNameParam === "users" && id == userLoggedIn.userId)) {
+      if ((userLoggedIn.userCategory === "admin" && tableNameParam !== "users") || (tableNameParam === "users" && id == userLoggedIn.userId)) {
       
          try {
 
@@ -448,7 +448,7 @@ function deleteItem(db, tableNameParam) {
 
       // To check if user logged in is:
          // Admins: only admins have permission to delete data
-      if (userLoggedIn.userCategory != "admin") {
+      if (userLoggedIn.userCategory !== "admin") {
          res.status(401).json({
             error: "WARNING",
             message: "User not authorized!"
