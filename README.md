@@ -27,15 +27,15 @@
 | TABLES | INDEXES | RELATIONS |
 | ------ | ------- | --------- |
 | ALL | id → primary key
-| backlog |
+| backlog | - | - |
 | courses | name + edition_number → unique | teacher_id, status_id |
 | lessons_schedule | date + begin_time + end_time + course_id → unique | course_id, status_id |
-| school | name → unique
-| | name + abbreviation → unique |
-| status | name → unique |
+| school | name → unique | - |
+| | abbreviation + name → unique | - |
+| status | name → unique | - |
 | students | name + surname → unique | course_id, status_id |
 | teachers | name + surname → unique | status_id
-| users | email → unique |
+| users | email → unique | - |
 
 ---
 ---
