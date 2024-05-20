@@ -135,8 +135,8 @@ res.status(200).json({
 | USER CATEGORY | ACCESS | 
 | ------------- | ------ |
 | Admins | Full access |
-| Teachers | Full access, except users table and backlog table |
-| Students | Full access, except users table and backlog table |
+| Teachers | Limited access, no access to backlog table and status table and when access users table, which only will show his own result |
+| Students | limited access, no access to backlog table, status table and teachers table and when access users table, which only will show his own result |
 
 ### Response
 
@@ -198,8 +198,8 @@ Example response for users table:
 | USER CATEGORY | ACCESS | 
 | ------------- | ------ |
 | Admins | Full access |
-| Teachers | Limited access, no access to users table, except user self-search |
-| Students | Limited access, no access to users table, except user self-search, and no access to teachers table and when students table only with self-search |
+| Teachers | Limited access, no access to users table, except user self-search, and no access to status table |
+| Students | Limited access, no access to users table, except user self-search, and no access to teachers table and status table and when students table only with self-search |
 
 ### Response
 
