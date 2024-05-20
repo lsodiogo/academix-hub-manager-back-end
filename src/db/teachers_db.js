@@ -25,8 +25,11 @@ async function getAllItems(limit, offset) {
    const params = [ limit, offset ];
    
    const sql = `
-      SELECT *
+      SELECT teachers.*,
+         status.name AS status_name
       FROM teachers
+      JOIN status ON teachers.status_id = status.id
+      ORDER BY teachers.name ASC
       LIMIT ?
       OFFSET ?
    `;
@@ -47,9 +50,11 @@ async function getItemById(id) {
    const params = [ id ];
 
    const sql = `
-      SELECT *
+      SELECT teachers.*,
+         status.name AS status_name
       FROM teachers
-      WHERE id = ?
+      JOIN status ON teachers.status_id = status.id
+      WHERE teachers.id = ?
    `;
 
    try {

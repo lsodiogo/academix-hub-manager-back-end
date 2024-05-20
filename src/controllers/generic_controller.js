@@ -26,14 +26,48 @@ function getAllItems(db, tableNameParam) {
          return;
       };
 
+
+      // To check if user logged in is teacher or student category, who wants to access users table, which only will show his own result
+      if ((userLoggedIn.userCategory === "teacher" || userLoggedIn.userCategory === "student") && tableNameParam === "users") {
+
+         try {
+
+            // To get result of item by email
+            const itemByEmail = await db.getItemByEmail(userLoggedIn.userEmail);
+            const item = itemByEmail[0];
+
+            // To check if item exists
+            if (!item) {
+               res.status(404).json({
+                  error: "WARNING",
+                  message: "Item not found!"
+               });
+
+               return;
+            };
+
+            // To show data
+            res.status(200).json(item);
+            return;
+
+         } catch(error) {
+            res.status(500).json({
+               error: "WARNING",
+               message: error.message
+            });
+            return;
+         };
+      };
+
       
       // To check if user logged in is:
          // Admins: full access
-         // Teachers: full access, except users table and backlog table
-         // Students: full access, except users table and backlog table
+         // Teachers: limited access, no access to backlog table and status table
+         // Students: limited access, no access to backlog table, status table and teachers table
       if (
             (userLoggedIn.userCategory === "admin" ||
-               ((userLoggedIn.userCategory === "teacher" || userLoggedIn.userCategory === "student") && (tableNameParam !== "users" && tableNameParam !== "backlog"))
+               (userLoggedIn.userCategory === "teacher" && (tableNameParam !== "backlog" && tableNameParam !== "status")) ||
+               (userLoggedIn.userCategory === "student" && (tableNameParam !== "backlog" && tableNameParam !== "status" && tableNameParam !== "teachers"))
             )
          ) {
 
@@ -121,7 +155,7 @@ function getItemById(db, tableNameParam) {
 
 
          // To check if item exists
-         if (!item) {
+         if (!item || !userLoggedIn.userEmail) {
             res.status(404).json({
                error: "WARNING",
                message: "Item not found!"
@@ -133,32 +167,29 @@ function getItemById(db, tableNameParam) {
 
          // To check if user logged in is:
             // Admins: full access
-            // Teachers: limited access, no access to users table, except user self-search
-            // Students: limited access, no access to users table, except user self-search, and no access to teachers table and when students table only with self-search
+            // Teachers: limited access, no access to users table, except user self-search, and no access to status table
+            // Students: limited access, no access to users table, except user self-search, and no access to teachers table and status table and when students table only with self-search
          if ((userLoggedIn.userCategory === "admin") ||
                ((tableNameParam === "users" && id == userLoggedIn.userId) ||
-                  (userLoggedIn.userCategory === "teacher" && tableNameParam !== "users") ||
+                  (userLoggedIn.userCategory === "teacher" && (tableNameParam !== "users" || tableNameParam !== "status")) ||
                   (userLoggedIn.userCategory === "student" &&
-                     ((tableNameParam === "students" && userLoggedIn.userEmail === itemById[0].email) ||
-                     (tableNameParam !== "students" && tableNameParam !== "users" && tableNameParam !== "teachers"))
+                     ((tableNameParam === "students" && userLoggedIn.userEmail === item.email) ||
+                     (tableNameParam !== "students" && tableNameParam !== "users" && tableNameParam !== "teachers" && tableNameParam !== "status"))
                   )
                )
             ) {
-               
 
-            //HERE   
+
             // To show data
             res.status(200).json(item);
 
-            
+
             // To log into backlog if any search by id have been done
             const action = "search";
             const tableName = tableNameParam;
             const userLoggedInEmail = userLoggedIn.userEmail;
             await backlogDB.logChangesToBacklog(item, item.id, action, tableName, userLoggedInEmail);
-            //HERE
 
-               
 
          } else {
             res.status(401).json({
@@ -198,7 +229,7 @@ function addItem(db, tableNameParam) {
 
 
       // To check if user logged in is:
-         // Admins: only admins have permission to delete data
+         // Admins: only admins have permission to add data
       if (userLoggedIn.userCategory !== "admin") {
          res.status(401).json({
             error: "WARNING",

@@ -42,6 +42,27 @@ async function getAllItems(limit, offset) {
 };
 
 
+async function getItemByEmail(email) {
+   
+   const params = [ email ];
+
+   const sql = `
+      SELECT id, email, category, created_at, updated_at
+      FROM users
+      WHERE email = ?
+   `;
+
+   try {
+      const result = await connection.promise().query(sql, params);
+      return result[0];
+
+   } catch(error) {
+      console.log(error);
+      throw new Error(`Something went wrong while trying to log in user ${email}!`);
+   };
+};
+
+
 async function getItemById(id) {
    
    const params = [ id ];
@@ -193,6 +214,7 @@ async function getStudentByEmail(email) {
 module.exports = {
    getTotalItems,
    getAllItems,
+   getItemByEmail,
    getItemById,
    addItem,
    updateItem,

@@ -10,6 +10,8 @@ function processPaginationLinks(limit, offset, totalItems, tableNameParam) {
    let previousPage = null;
    let nextPage = null;
    let lastPage = null;
+   let currentPage = Math.floor((offset / limit) + 1); // Calculate current page
+   let totalPages = Math.floor(totalItems / limit); // Calculate total pages
    
 
    // To build the first and previous page link
@@ -17,6 +19,7 @@ function processPaginationLinks(limit, offset, totalItems, tableNameParam) {
       firstPage = `${tableNameParam}/?limit=${limit}&offset=${firstOffset}`;
       previousPage = `${tableNameParam}/?limit=${limit}&offset=${previousOffset}`;
    };
+
 
    // To make sure when the offset is changed in the URL, while clicking "previous" can go back to the very first result
    if (offset > 0 && offset < limit) {
@@ -37,6 +40,8 @@ function processPaginationLinks(limit, offset, totalItems, tableNameParam) {
       previousPage,
       nextPage,
       lastPage,
+      totalPages,
+      currentPage,
       limit,
       offset
    };
