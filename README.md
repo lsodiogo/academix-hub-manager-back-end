@@ -136,7 +136,7 @@ res.status(200).json({
 | ------------- | ------ |
 | Admins | Full access |
 | Teachers | Limited access, no access to backlog table and status table and when access users table, which only will show his own result |
-| Students | limited access, no access to backlog table, status table and teachers table and when access users table, which only will show his own result |
+| Students | Limited access, no access to backlog table, status table and teachers table and when access users table, which only will show his own result |
 
 ### Response
 

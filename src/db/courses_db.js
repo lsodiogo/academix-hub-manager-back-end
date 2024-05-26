@@ -31,7 +31,7 @@ async function getAllItems(limit, offset) {
       FROM courses
       JOIN teachers ON courses.teacher_id = teachers.id
       JOIN status ON courses.status_id = status.id
-      ORDER BY courses.name ASC
+      ORDER BY courses.id DESC
       LIMIT ?
       OFFSET ?
    `;
@@ -73,9 +73,9 @@ async function getItemById(id) {
 
 
 async function addItem(itemData) {
-   
-   const { name, edition, duration, begin, end, description, teacher, status } = itemData;
-   const params = [ name, edition, duration, begin, end, description, teacher, status ];
+
+   const { name, edition, duration, start, finish, description, teacher, status } = itemData;
+   const params = [ name, edition, duration, start, finish, description, teacher, status ];
    
    const sql = `
       INSERT INTO courses
@@ -96,8 +96,8 @@ async function addItem(itemData) {
 
 async function updateItem(id, itemData) {
    
-   const { name, edition, duration, begin, end, description, teacher, status } = itemData;
-   const params = [ name, edition, duration, begin, end, description, teacher, status, id ];
+   const { name, edition, duration, start, finish, description, teacher, status } = itemData;
+   const params = [ name, edition, duration, start, finish, description, teacher, status, id ];
 
    const sql = `
       UPDATE courses

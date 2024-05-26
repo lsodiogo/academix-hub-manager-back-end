@@ -1,18 +1,20 @@
 function processPaginationLinks(limit, offset, totalItems, tableNameParam) {
 
    const firstOffset    = 0;
-   const nextOffset     = offset + limit;
    const previousOffset = offset - limit;
-   const lastOffset     = Math.floor((totalItems / limit)) * limit - 1;
+   const nextOffset     = offset + limit;
+   const lastOffset     = Math.abs((totalItems / limit) * limit) - limit;
 
 
    let firstPage = null;
    let previousPage = null;
    let nextPage = null;
    let lastPage = null;
+
+
+   let totalPages = Math.ceil(totalItems / limit); // Calculate total pages
    let currentPage = Math.floor((offset / limit) + 1); // Calculate current page
-   let totalPages = Math.floor(totalItems / limit); // Calculate total pages
-   
+
 
    // To build the first and previous page link
    if (previousOffset >= 0) {
