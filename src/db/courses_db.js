@@ -27,6 +27,7 @@ async function getAllItems(limit, offset) {
    const sql = `
       SELECT courses.*,
          CONCAT(teachers.name, ' ', teachers.surname) AS teacher_name,
+         teachers.email as teacher_email,
          status.name AS status_name
       FROM courses
       JOIN teachers ON courses.teacher_id = teachers.id
@@ -54,6 +55,7 @@ async function getItemById(id) {
    const sql = `
       SELECT courses.*,
          CONCAT(teachers.name, ' ', teachers.surname) AS teacher_name,
+         teachers.email as teacher_email,
          status.name AS status_name
       FROM courses
       JOIN teachers ON courses.teacher_id = teachers.id

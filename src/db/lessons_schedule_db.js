@@ -96,14 +96,14 @@ async function addItem(itemData) {
 
 async function updateItem(id, itemData) {
    
-   const { name } = itemData;
-   const params = [ name, id ];
+   const { date, begin, end, description, course, status } = itemData;
+   const params = [ date, begin, end, description, course, status, id ];
    
    const sql = `
       UPDATE lessons_schedule
       SET date = ?,
-         begin = ?,
-         end = ?,
+         begin_time = ?,
+         end_time = ?,
          description = ?,
          course_id = ?,
          status_id = ?

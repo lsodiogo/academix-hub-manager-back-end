@@ -1,3 +1,5 @@
+const cookie = require('cookie');
+
 function setCookie(res, cookieData, rememberMe) {
    
    // Data to be added to cookie
@@ -8,7 +10,7 @@ function setCookie(res, cookieData, rememberMe) {
       sameSite: "none",
       secure: true,
       signed: true,
-      expires: rememberMe ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null // 1 day of validation
+      maxAge: rememberMe ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null // 1 day of validation
    });
 };
 
