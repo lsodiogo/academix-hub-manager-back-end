@@ -79,7 +79,7 @@ async function addItem(itemData) {
    
    const sql = `
       INSERT INTO students
-      (name, surname, birthdate, email, telef, address, enrolled, course, grade, graduated, status)
+      (name, surname, birthdate, email, telef, address, enrolled_at, course_id, grade, graduated_at, status_id)
       VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
    `;
 
