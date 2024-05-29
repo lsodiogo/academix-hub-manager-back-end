@@ -217,7 +217,7 @@ function addItem(db, tableNameParam) {
       const userLoggedIn = cookieService.verifyCookie(req);
 
 
-      // To check if user is logged in and if it's admin
+      // To check if user is logged in
       if (!userLoggedIn) {
          res.status(401).json({
             error: "WARNING",
