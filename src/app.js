@@ -3,6 +3,7 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+/* const corsMiddleware = require("./middlewares/cors_middleware"); */
 const cookieParser = require("cookie-parser");
 
 
@@ -13,6 +14,7 @@ const corsOptions = {
    origin: "http://localhost:5173",
    credentials: true
 };
+
 
 
 const loginRouter = require("./routers/login_router");
@@ -28,6 +30,7 @@ const backlogRouter = require("./routers/backlog_router");
 
 app.use(express.json());
 app.use(cors(corsOptions));
+/* app.use(corsMiddleware); */
 app.use(cookieParser(secretKey));
 
 

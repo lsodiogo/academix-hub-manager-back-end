@@ -10,6 +10,7 @@ function setCookie(res, cookieData, rememberMe) {
       sameSite: "none",
       secure: true,
       signed: true,
+      partitioned: true,
       maxAge: rememberMe ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null // 1 day of validation
    });
 };

@@ -33,7 +33,7 @@ async function getAllItems(limit, offset) {
 
    try {
       const result = await connection.promise().query(sql, params);
-      return result[0];
+      return result[0][0];
 
    } catch(error) {
       console.log(error);
