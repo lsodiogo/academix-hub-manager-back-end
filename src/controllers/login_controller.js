@@ -29,7 +29,7 @@ function loginUser(db, tableNameParam) {
                cookieService.setCookie(res, cookieData, rememberMe);
 
                res.status(200).json({
-                  error: "SUCCESS",
+                  type: "SUCCESS",
                   message: `User ${user.email} logged in!`
                });
 
@@ -40,21 +40,21 @@ function loginUser(db, tableNameParam) {
 
             } else {
                res.status(401).json({
-                  error: "WARNING",
+                  type: "WARNING",
                   message: "Wrong password!"
                });
             };
 
          } else {
             res.status(404).json({
-               error: "WARNING",
+               type: "WARNING",
                message: "User not found!"
             });
          };
 
       } catch(error) {
          res.status(500).json({
-            error: "WARNING",
+            type: "WARNING",
             message: error.message
          });
       };
@@ -71,7 +71,7 @@ function loginCheck(req, res)  {
       res.status(200).json(result);
    } else {
       res.status(401).json({
-         error: "WARNING",
+         type: "WARNING",
          message: "Please, login!"
       });
    };
@@ -82,15 +82,15 @@ function logoutUser(req, res)  {
 
    // To logout user
    const result = cookieService.clearCookie(req, res);
-
+   console.log(result)
    if (result) {
       res.status(200).json({
-         error: "SUCCESS",
+         type: "SUCCESS",
          message: `Logout successful!`
       });
    } else {
       res.status(404).json({
-         error: "WARNING",
+         type: "WARNING",
          message: "No user logged in!"
       });
    };

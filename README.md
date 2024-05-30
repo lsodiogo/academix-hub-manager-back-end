@@ -118,7 +118,7 @@ res.status(200).json(result);
 
 ```
 res.status(200).json({
-	error: "SUCCESS",
+	type: "SUCCESS",
 	message: `Logout successful!`
 });
 ```

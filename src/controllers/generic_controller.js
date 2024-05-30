@@ -19,7 +19,7 @@ function getAllItems(db, tableNameParam) {
       // To check if user is logged in
       if (!userLoggedIn) {
          res.status(401).json({
-            error: "WARNING",
+            type: "WARNING",
             message: "Please, login!"
          });
 
@@ -39,7 +39,7 @@ function getAllItems(db, tableNameParam) {
             // To check if item exists
             if (!item) {
                res.status(404).json({
-                  error: "WARNING",
+                  type: "WARNING",
                   message: "Item not found!"
                });
 
@@ -52,7 +52,7 @@ function getAllItems(db, tableNameParam) {
 
          } catch(error) {
             res.status(500).json({
-               error: "WARNING",
+               type: "WARNING",
                message: error.message
             });
             return;
@@ -104,20 +104,20 @@ function getAllItems(db, tableNameParam) {
 
             } else {
                res.status(404).json({
-                  error: "WARNING",
+                  type: "WARNING",
                   message: "No data found!"
                });
             };
 
          } catch(error) {
             res.status(500).json({
-               error: "WARNING",
+               type: "WARNING",
                message: error.message
             });
          };
       } else {
          res.status(401).json({
-            error: "WARNING",
+            type: "WARNING",
             message: "User not authorized!"
          });
       };
@@ -139,7 +139,7 @@ function getItemById(db, tableNameParam) {
       // To check if user is logged in
       if (!userLoggedIn) {
          res.status(401).json({
-            error: "WARNING",
+            type: "WARNING",
             message: "Please, login!"
          });
 
@@ -157,7 +157,7 @@ function getItemById(db, tableNameParam) {
          // To check if item exists
          if (!item || !userLoggedIn.userEmail) {
             res.status(404).json({
-               error: "WARNING",
+               type: "WARNING",
                message: "Item not found!"
             });
 
@@ -193,14 +193,14 @@ function getItemById(db, tableNameParam) {
 
          } else {
             res.status(401).json({
-               error: "WARNING",
+               type: "WARNING",
                message: "User not authorized!"
             });
          };
 
       } catch(error) {
          res.status(500).json({
-            error: "WARNING",
+            type: "WARNING",
             message: error.message
          });
       };
@@ -220,7 +220,7 @@ function addItem(db, tableNameParam) {
       // To check if user is logged in
       if (!userLoggedIn) {
          res.status(401).json({
-            error: "WARNING",
+            type: "WARNING",
             message: "Please, login!"
          });
 
@@ -232,7 +232,7 @@ function addItem(db, tableNameParam) {
          // Admins: only admins have permission to add data
       if (userLoggedIn.userCategory !== "admin") {
          res.status(401).json({
-            error: "WARNING",
+            type: "WARNING",
             message: "User not authorized!"
          });
 
@@ -252,7 +252,7 @@ function addItem(db, tableNameParam) {
 
             if (!teacherByEmail[0]) {
                res.status(404).json({
-                  error: "WARNING",
+                  type: "WARNING",
                   message: "User not found!"
                });
 
@@ -264,7 +264,7 @@ function addItem(db, tableNameParam) {
 
          } catch(error) {
             res.status(500).json({
-               error: "WARNING",
+               type: "WARNING",
                message: error.message
             });
          };
@@ -277,7 +277,7 @@ function addItem(db, tableNameParam) {
 
             if (!studentByEmail[0]) {
                res.status(404).json({
-                  error: "WARNING",
+                  type: "WARNING",
                   message: "User not found!"
                });
 
@@ -289,7 +289,7 @@ function addItem(db, tableNameParam) {
 
          } catch(error) {
             res.status(500).json({
-               error: "WARNING",
+               type: "WARNING",
                message: error.message
             });
          };
@@ -343,14 +343,14 @@ function addItem(db, tableNameParam) {
 
          } catch(error) {
             res.status(500).json({
-               error: "WARNING",
+               type: "WARNING",
                message: error.message
             });
          };
 
       } else {
          res.status(404).json({
-            error: "WARNING",
+            type: "WARNING",
             message: "User not found!"
          });
       };
@@ -370,7 +370,7 @@ function updateItem(db, tableNameParam) {
       // To check if user is logged in
       if (!userLoggedIn) {
          res.status(401).json({
-            error: "WARNING",
+            type: "WARNING",
             message: "Please, login!"
          });
 
@@ -435,21 +435,21 @@ function updateItem(db, tableNameParam) {
    
             } else {
                res.status(404).json({
-                  error: "WARNING",
+                  type: "WARNING",
                   message: "Item not found!"
                });
             }; 
    
          } catch(error) {
             res.status(500).json({
-               error: "WARNING",
+               type: "WARNING",
                message: error.message
             });
          };
 
       } else {
          res.status(401).json({
-            error: "WARNING",
+            type: "WARNING",
             message: "User not authorized!"
          });
       };
@@ -469,7 +469,7 @@ function deleteItem(db, tableNameParam) {
       // To check if user is logged in
       if (!userLoggedIn) {
          res.status(401).json({
-            error: "WARNING",
+            type: "WARNING",
             message: "Please, login!"
          });
 
@@ -481,7 +481,7 @@ function deleteItem(db, tableNameParam) {
          // Admins: only admins have permission to delete data
       if (userLoggedIn.userCategory !== "admin") {
          res.status(401).json({
-            error: "WARNING",
+            type: "WARNING",
             message: "User not authorized!"
          });
 
@@ -510,7 +510,7 @@ function deleteItem(db, tableNameParam) {
          if (item === 1) {
             await db.getItemById(id);
             res.status(200).json({
-               error: "SUCCESS",
+               type: "SUCCESS",
                message: "Item deleted!"
             });
 
@@ -523,14 +523,14 @@ function deleteItem(db, tableNameParam) {
 
          } else {
             res.status(404).json({
-               error: "WARNING",
+               type: "WARNING",
                message: "Item not found!"
             });
          }; 
 
       } catch(error) {
          res.status(500).json({
-            error: "WARNING",
+            type: "WARNING",
             message: error.message
          });
       };
