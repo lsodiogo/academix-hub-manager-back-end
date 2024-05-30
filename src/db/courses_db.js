@@ -32,7 +32,7 @@ async function getAllItems(limit, offset) {
       FROM courses
       JOIN teachers ON courses.teacher_id = teachers.id
       JOIN status ON courses.status_id = status.id
-      ORDER BY courses.id DESC
+      ORDER BY courses.name ASC
       LIMIT ?
       OFFSET ?
    `;

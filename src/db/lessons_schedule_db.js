@@ -31,7 +31,6 @@ async function getAllItems(limit, offset) {
       FROM lessons_schedule
       JOIN courses ON lessons_schedule.course_id = courses.id
       JOIN status ON lessons_schedule.status_id = status.id
-      ORDER BY lessons_schedule.date DESC
       LIMIT ?
       OFFSET ?
    `;

@@ -27,6 +27,7 @@ async function getAllItems(limit, offset) {
    const sql = `
       SELECT id, email, category, created_at, updated_at
       FROM users
+      ORDER BY category ASC
       LIMIT ?
       OFFSET ?
    `;
