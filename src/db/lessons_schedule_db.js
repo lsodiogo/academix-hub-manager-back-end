@@ -37,6 +37,7 @@ async function getAllItems(limit, offset) {
 
    try {
       const result = await connection.promise().query(sql, params);
+      console.log(result);
       return result[0];
 
    } catch(error) {
@@ -75,7 +76,7 @@ async function addItem(itemData) {
    
    const { date, begin, end, description, course, status } = itemData;
    const params = [ date, begin, end, description, course, status ];
-   
+
    const sql = `
       INSERT INTO lessons_schedule
       (date, begin_time, end_time, description, course_id, status_id)
