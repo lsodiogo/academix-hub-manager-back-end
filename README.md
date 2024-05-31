@@ -5,7 +5,10 @@
 
 # CONTENTS
 
+- [FRONT-END PROJECT](https://github.com/lsodiogo/academix-hub-manager-front-end)
 - [BRIEFING](#briefing)
+- [DIAGRAM](#diagram)
+- [DATABASE](https://github.com/lsodiogo/academix-hub-manager-back-end/blob/main/docs/academix_hub_manager_database_2024-05-31.sql)
 - [DATABASE INDEXES & RELATIONS](#database-indexes--relations)
 - [ENDPOINTS](#endpoints)
   - [Overview](#overview)
@@ -308,3 +311,10 @@ Example POST body for teachers table:
 # BRIEFING
 
 ![BRIEFING](https://github.com/lsodiogo/academix-hub-manager/blob/main/docs/briefing.svg)
+
+---
+---
+
+# DIAGRAM
+
+![DIAGRAM](https://github.com/lsodiogo/academix-hub-manager-back-end/blob/main/docs/diagram.svg)
