@@ -33,7 +33,7 @@ app.use(cors(corsOptions));
 /* app.use(corsMiddleware); */
 app.use(cookieParser(secretKey));
 
-// TESTE
+
 app.use("/login", loginRouter);
 app.use("/users", usersRouter);
 app.use("/school", schoolRouter);
