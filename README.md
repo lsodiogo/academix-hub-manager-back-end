@@ -310,7 +310,7 @@ Example POST body for teachers table:
 
 # BRIEFING
 
-![BRIEFING](https://github.com/lsodiogo/academix-hub-manager/blob/main/docs/briefing.svg)
+![BRIEFING](https://github.com/lsodiogo/academix-hub-manager-back-end/blob/main/docs/briefing.svg)
 
 ---
 ---
